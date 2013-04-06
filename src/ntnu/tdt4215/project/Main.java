@@ -64,7 +64,7 @@ public class Main  {
 //                                            "file:testing/reasoners/bugs/food.owl" );
 //
         m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10",
-              "file:owl/icd10no.owl" );
+              "file:owl/atc_no_ext.owl" );
         m.read( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10" );
         new ClassHierarchy().showHierarchy( System.out, m );
 //    	// create an empty model
