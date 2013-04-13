@@ -72,6 +72,7 @@ public class ClassHierarchy {
                                     }} );
 
         while (i.hasNext()) {
+        	//renderClassDescription(out, i.next(), 1);
             showClass( out, i.next(), new ArrayList<OntClass>(), 0 );
         }
     }
