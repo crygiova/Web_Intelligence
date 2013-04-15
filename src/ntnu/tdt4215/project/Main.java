@@ -23,6 +23,11 @@ package ntnu.tdt4215.project;
 
 // Imports
 ///////////////
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -49,9 +54,41 @@ public class Main  {
     // External signature methods
     //////////////////////////////////
 
-    public static void main( String[] args ) {
+    public static void main( String[] args ) throws IOException {
     	System.out.println("WORKING ..........");
-        OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM, null );
+    	
+    	final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
+        //final Pattern pattern = Pattern.compile(">.*</");
+    	//RIGHT TODO ->content final Pattern pattern = Pattern.compile(".*>(.*?)<.*");
+    	// RIGHT TODO  -> name final Pattern pattern = Pattern.compile("<(.*?)\\s");
+//    	final Pattern pattern = Pattern.compile(";(.*?)\"");
+//    	final String[] result = (pattern).split(str);
+//    	Matcher m = pattern.matcher(str);
+////    	
+//    	while(m.find())
+//    	{
+//    		System.out.println(m.group(1));
+//    	}
+//    	System.out.println();
+//        System.out.println(Arrays.toString(result));
+        OwlToSolr.parserOWL("icd10no.owl","jose.xml");
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+    	
+//        OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM, null );
 
         // we have a local copy of the wine ontology
 //        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/wine",
@@ -63,10 +100,10 @@ public class Main  {
 //        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/food.owl",
 //                                            "file:testing/reasoners/bugs/food.owl" );
 //
-        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10",
-              "file:owl/icd10no.owl" );
-        m.read( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10" );
-        new ClassHierarchy().showHierarchy( System.out, m );
+//        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10",
+//              "file:owl/icd10no.owl" );
+//        m.read( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10" );
+//        new ClassHierarchy().showHierarchy( System.out, m );
 //    	// create an empty model
 //    	 Model model = ModelFactory.createDefaultModel();
 //

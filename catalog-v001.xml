@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1366013928947" name="http://research.idi.ntnu.no/hilab/ehr/ontologies/icd10no.owl" uri="icd10no.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1366013928947" name="http://www.ebi.ac.uk/Rebholz-srv/atc/public/ontologies/atc.owl" uri="owl/atc.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1366013928947" name="shadowed:http://research.idi.ntnu.no/hilab/ehr/ontologies/icd10no.owl" uri="owl/icd10no.owl"/>
+    </group>
+</catalog>
