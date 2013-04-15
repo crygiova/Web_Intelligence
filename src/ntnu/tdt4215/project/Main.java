@@ -1,49 +1,15 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-// Package
-///////////////
 package ntnu.tdt4215.project;
 
-// Imports
-///////////////
 import java.io.IOException;
 
-/**
- * <p>
- * Execution wrapper for class hierarchy example
- * </p>
- */
+import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.impl.XMLResponseParser;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocumentList;
+
 public class Main {
-    // Constants
-    // ////////////////////////////////
-
-    // Static variables
-    // ////////////////////////////////
-
-    // Instance variables
-    // ////////////////////////////////
-
-    // Constructors
-    // ////////////////////////////////
-
-    // External signature methods
-    // ////////////////////////////////
     private final static String DOCU_FOLDER = "./docu/";
     private final static String T_FOLDER = DOCU_FOLDER + "NLH/T/";
 
@@ -58,6 +24,36 @@ public class Main {
 	// Pattern.compile("<(.*?)\\s");
 	// Parser.parserOWL("newIcd.owl","jose.xml");
 	System.out.println(Parser.parseHTM(T_FOLDER + "innhold.htm", ""));
+	
+	System.out.println("WORKING ..........");
+	String url = "http://localhost:8983/solr";
+	SolrServer server = new HttpSolrServer(url);
+	((HttpSolrServer) server).setParser(new XMLResponseParser());
+//	SolrInputDocument doc1 = new SolrInputDocument();
+//	doc1.addField( "id", "id1", 1.0f );
+//	doc1.addField( "name", "doc1", 1.0f );
+//	doc1.addField( "price", 10 );
+//	SolrInputDocument doc2 = new SolrInputDocument();
+//	doc2.addField( "id", "id2", 1.0f );
+//	doc2.addField( "name", "doc2", 1.0f );
+//	doc2.addField( "price", 20 );		
+//	Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
+//	docs.add( doc1 );
+//	docs.add( doc2 );
+//	server.add(docs);
+//	server.commit();
+	SolrQuery query = new SolrQuery();
+	query.setQuery("Eva Andersen er en skoleelev som har hatt insulinkrevende diabetes mellitus i 3 år");
+	query.addField("id");
+	QueryResponse rsp = server.query( query );
+	SolrDocumentList docs = rsp.getResults();
+	Object[] results = rsp.getResults().toArray();
+	for(int i=0;i<results.length;i++){
+	    System.out.println(results[i].toString());
+
+	}
+	System.out.println("done");
+    }
     }
 
 }
