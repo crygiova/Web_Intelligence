@@ -24,7 +24,7 @@ public class Main {
 	// RIGHT TODO -> name final Pattern pattern =
 	// Pattern.compile("<(.*?)\\s");
 	// Parser.parserOWL("newIcd.owl","jose.xml");
-	System.out.println(Parser.parseHTM(T_FOLDER + "innhold.htm", ""));
+	System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
 	
 	System.out.println("WORKING ..........");
 	String url = "http://localhost:8983/solr";
