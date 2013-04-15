@@ -48,10 +48,8 @@ public class Main {
 	query.addField("id");
 	QueryResponse rsp = server.query( query );
 	SolrDocumentList docs = rsp.getResults();
-	Object[] results = rsp.getResults().toArray();
-	for(int i=0;i<results.length;i++){
-	    System.out.println(results[i].toString());
-
+	for(int i=0;i<docs.size();i++){
+	    System.out.println(docs.get(i).toString());
 	}
 	System.out.println("done");
     }
