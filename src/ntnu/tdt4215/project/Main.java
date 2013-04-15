@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.impl.XMLResponseParser;
 import org.apache.solr.client.solrj.response.QueryResponse;
@@ -13,7 +14,7 @@ public class Main {
     private final static String DOCU_FOLDER = "./docu/";
     private final static String T_FOLDER = DOCU_FOLDER + "NLH/T/";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SolrServerException {
 	System.out.println("WORKING ..........");
 
 	final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
@@ -54,6 +55,4 @@ public class Main {
 	}
 	System.out.println("done");
     }
-    }
-
 }
