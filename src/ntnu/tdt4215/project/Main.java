@@ -71,7 +71,7 @@ public class Main  {
 //    	}
 //    	System.out.println();
 //        System.out.println(Arrays.toString(result));
-        OwlToSolr.parserOWL("icd10no.owl","jose.xml");
+        OwlToSolr.parserOWL("newIcd.owl","jose.xml");
     	
     	
     	
