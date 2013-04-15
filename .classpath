@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="lib/xercesImpl-2.10.0.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="/Users/christiangiovanelli/Downloads/solr-4.2.1/contrib"/>
+	<classpathentry kind="lib" path="/Users/christiangiovanelli/Desktop/jsoup-1.7.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="/Users/christiangiovanelli/Desktop/jsoup-1.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

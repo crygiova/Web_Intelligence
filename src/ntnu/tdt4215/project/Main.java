@@ -20,7 +20,6 @@
 ///////////////
 package ntnu.tdt4215.project;
 
-
 // Imports
 ///////////////
 import java.io.IOException;
@@ -32,29 +31,30 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
-
 /**
  * <p>
  * Execution wrapper for class hierarchy example
  * </p>
  */
-public class Main  {
-    // Constants
-    //////////////////////////////////
+public class Main {
+	// Constants
+	// ////////////////////////////////
 
-    // Static variables
-    //////////////////////////////////
+	// Static variables
+	// ////////////////////////////////
 
-    // Instance variables
-    //////////////////////////////////
+	// Instance variables
+	// ////////////////////////////////
 
-    // Constructors
-    //////////////////////////////////
+	// Constructors
+	// ////////////////////////////////
 
-    // External signature methods
-    //////////////////////////////////
+	// External signature methods
+	// ////////////////////////////////
+	private final static String DOCU_FOLDER = "./docu/";
+	private final static String T_FOLDER = DOCU_FOLDER+"NLH/T/";
 
-    public static void main( String[] args ) throws IOException {
+	public static void main( String[] args ) throws IOException {
     	System.out.println("WORKING ..........");
     	
     	final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
@@ -71,8 +71,8 @@ public class Main  {
 //    	}
 //    	System.out.println();
 //        System.out.println(Arrays.toString(result));
-        OwlToSolr.parserOWL("newIcd.owl","jose.xml");
-    	
+        //Parser.parserOWL("newIcd.owl","jose.xml");
+    		System.out.println(Parser.parseHTM(T_FOLDER+"innhold.htm", ""));
     	
     	
     	
@@ -122,12 +122,11 @@ public class Main  {
 //    	model.write(System.out);
     }
 
+	// Internal implementation methods
+	// ////////////////////////////////
 
-    // Internal implementation methods
-    //////////////////////////////////
-
-    //==============================================================================
-    // Inner class definitions
-    //==============================================================================
+	// ==============================================================================
+	// Inner class definitions
+	// ==============================================================================
 
 }
