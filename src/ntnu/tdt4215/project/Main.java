@@ -23,13 +23,6 @@ package ntnu.tdt4215.project;
 // Imports
 ///////////////
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 /**
  * <p>
@@ -37,96 +30,34 @@ import com.hp.hpl.jena.rdf.model.ModelFactory;
  * </p>
  */
 public class Main {
-	// Constants
-	// ////////////////////////////////
+    // Constants
+    // ////////////////////////////////
 
-	// Static variables
-	// ////////////////////////////////
+    // Static variables
+    // ////////////////////////////////
 
-	// Instance variables
-	// ////////////////////////////////
+    // Instance variables
+    // ////////////////////////////////
 
-	// Constructors
-	// ////////////////////////////////
+    // Constructors
+    // ////////////////////////////////
 
-	// External signature methods
-	// ////////////////////////////////
-	private final static String DOCU_FOLDER = "./docu/";
-	private final static String T_FOLDER = DOCU_FOLDER+"NLH/T/";
+    // External signature methods
+    // ////////////////////////////////
+    private final static String DOCU_FOLDER = "./docu/";
+    private final static String T_FOLDER = DOCU_FOLDER + "NLH/T/";
 
-	public static void main( String[] args ) throws IOException {
-    	System.out.println("WORKING ..........");
-    	
-    	final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
-        //final Pattern pattern = Pattern.compile(">.*</");
-    	//RIGHT TODO ->content final Pattern pattern = Pattern.compile(".*>(.*?)<.*");
-    	// RIGHT TODO  -> name final Pattern pattern = Pattern.compile("<(.*?)\\s");
-//    	final Pattern pattern = Pattern.compile(";(.*?)\"");
-//    	final String[] result = (pattern).split(str);
-//    	Matcher m = pattern.matcher(str);
-////    	
-//    	while(m.find())
-//    	{
-//    		System.out.println(m.group(1));
-//    	}
-//    	System.out.println();
-//        System.out.println(Arrays.toString(result));
-        //Parser.parserOWL("newIcd.owl","jose.xml");
-    		System.out.println(Parser.parseHTM(T_FOLDER+"innhold.htm", ""));
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-    	
-//        OntModel m = ModelFactory.createOntologyModel( OntModelSpec.OWL_MEM, null );
+    public static void main(String[] args) throws IOException {
+	System.out.println("WORKING ..........");
 
-        // we have a local copy of the wine ontology
-//        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/wine",
-//                                            "file:testing/reasoners/bugs/wine.owl" );
-//        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/wine.owl",
-//                                            "file:testing/reasoners/bugs/wine.owl" );
-//        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/food",
-//                                            "file:testing/reasoners/bugs/food.owl" );
-//        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/food.owl",
-//                                            "file:testing/reasoners/bugs/food.owl" );
-//
-//        m.getDocumentManager().addAltEntry( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10",
-//              "file:owl/icd10no.owl" );
-//        m.read( "http://www.w3.org/2001/sw/WebOnt/guide-src/icd10" );
-//        new ClassHierarchy().showHierarchy( System.out, m );
-//    	// create an empty model
-//    	 Model model = ModelFactory.createDefaultModel();
-//
-//    	 // use the FileManager to find the input file
-//    	 String inputFileName="owl/icd10no_turtle.owl";
-//    	 InputStream in = FileManager.get().open( inputFileName );
-//    	if (in == null) {
-//    	    throw new IllegalArgumentException(
-//    	                                 "File: " + inputFileName + " not found");
-//    	}
-//
-//    	// read the RDF/XML file
-//    	model.read(in, null);
-//
-//    	// write it to standard out
-//    	model.write(System.out);
+	final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
+	// final Pattern pattern = Pattern.compile(">.*</");
+	// RIGHT TODO ->content final Pattern pattern =
+	// Pattern.compile(".*>(.*?)<.*");
+	// RIGHT TODO -> name final Pattern pattern =
+	// Pattern.compile("<(.*?)\\s");
+	// Parser.parserOWL("newIcd.owl","jose.xml");
+	System.out.println(Parser.parseHTM(T_FOLDER + "innhold.htm", ""));
     }
-
-	// Internal implementation methods
-	// ////////////////////////////////
-
-	// ==============================================================================
-	// Inner class definitions
-	// ==============================================================================
 
 }
