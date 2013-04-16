@@ -1,8 +1,10 @@
 package ntnu.tdt4215.project;
 
 import java.io.BufferedReader;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import org.apache.solr.client.solrj.SolrQuery;
@@ -30,21 +32,28 @@ public class Main {
 	//	
 	String url = "http://localhost:8983/solr";
 	SolrServer server = new HttpSolrServer(url);
-	//	((HttpSolrServer) server).setParser(new XMLResponseParser());
-	//	SolrInputDocument doc1 = new SolrInputDocument();
-	//	doc1.addField( "id", "id1", 1.0f );
-	//	doc1.addField( "name", "doc1", 1.0f );
-	//	doc1.addField( "price", 10 );
-	//	SolrInputDocument doc2 = new SolrInputDocument();
-	//	doc2.addField( "id", "id2", 1.0f );
-	//	doc2.addField( "name", "doc2", 1.0f );
-	//	doc2.addField( "price", 20 );		
-	//	Collection<SolrInputDocument> docs = new ArrayList<SolrInputDocument>();
-	//	docs.add( doc1 );
-	//	docs.add( doc2 );
-	//	server.add(docs);
-	//	server.commit();
-	Table notesVsICD10 = new Table();
+	//IOFileTxt.parserOWL("./owl/atc_no_ext_rdf.owl", "./owl/atc_no_ext_rdf.xml");
+	//IOFileTxt.parserOWL("./owl/icd10no.owl", "./owl/icd10no.xml");
+//	Table notesVsICD10 = new Table();
+	Table notesVsAtc = new Table();
+//	Table HandbookVsICD = new Table();
+//	Table HandbookVsAtc = new Table();
+//	fill(notesVsICD10,server);
+	fill(notesVsAtc,server);
+//	IOFileTxt.saveObj("./notesVSICD10.table", notesVsICD10);
+	IOFileTxt.saveObj("./notesVSAtc.table", notesVsAtc);
+	System.out.println("done");
+    }
+
+    private static void printTable(ArrayList<ArrayList<String>> notesVsICD10) {
+	for(int i = 0; i < notesVsICD10.size();i++) {
+	    for(int j = 0; j < notesVsICD10.get(0).size();i++){
+		System.out.println(notesVsICD10.get(i).get(j).toString());
+	    }
+	}
+    }
+
+    private static void fill(Table notesVsICD10,SolrServer server) throws IOException, SolrServerException{
 	for(Integer i = 1;i<=8;i++){
 	    BufferedReader br = new BufferedReader(new FileReader("docu/cases/case"+i+".txt"));
 	    int sentence = 1;
@@ -61,26 +70,23 @@ public class Main {
 		    query.addField("score");
 		    QueryResponse rsp = server.query( query );
 		    SolrDocumentList docs = rsp.getResults();
-		    ArrayList<String> articles = new ArrayList<String>(); 
-		    for(int j=0;j<docs.size();j++){
-			    articles.add(docs.get(j).getFieldValue("score").toString());
+		    ArrayList<StringAndFloat> articles = new ArrayList<StringAndFloat>(); 
+		    for(int j=0;j<docs.size();j++) {
+			float score = (Float) docs.get(j).getFieldValue("score");
+			String id = docs.get(j).getFieldValue("id").toString();
+			articles.add(new StringAndFloat(id,score));
 		    }
+//		    for(int k=0;k<articles.size();k++){
+//			System.out.print(articles.get(k).toString());
+//		    }
+//		    System.out.println("");
 		    notesVsICD10.setMatching(i.toString(), sentence, articles);
-		    System.out.println(notesVsICD10.getMatches(i.toString(), sentence));
+//		    System.out.println(notesVsICD10.getMatches(i.toString(), sentence));
 		    sentence++;
 		    line = br.readLine();
 		}
 	    } finally {
 		br.close();
-	    }
-	}
-    }
-
-
-    private static void printTable(ArrayList<ArrayList<String>> notesVsICD10) {
-	for(int i = 0; i < notesVsICD10.size();i++) {
-	    for(int j = 0; j < notesVsICD10.get(0).size();i++){
-		System.out.println(notesVsICD10.get(i).get(j).toString());
 	    }
 	}
     }

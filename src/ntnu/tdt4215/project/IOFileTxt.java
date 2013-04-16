@@ -134,9 +134,10 @@ public class IOFileTxt {
 		    String next = "";
 		    // System.out.println(obj);
 		    while ((next = br.readLine()) != null
-			    && !next.contains("</owl:Class>")) {
+			    && !next.contains("</owl:Class>") && !next.contains("rdfs:seeAlso")) {
 			String name = extractName(next);
 			String content;
+
 			if (name.contains("rdfs:subClassOf")
 				|| name.contains("exclusion")) {
 			    content = extractContentInside(next);

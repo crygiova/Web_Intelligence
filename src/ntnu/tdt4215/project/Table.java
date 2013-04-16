@@ -3,25 +3,28 @@ package ntnu.tdt4215.project;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Table {
-    private HashMap<Coordinates,ArrayList<String>> table;
+public class Table implements java.io.Serializable{
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private HashMap<Coordinates,ArrayList<StringAndFloat>> table;
 
     public Table(){
-	table = new HashMap<Coordinates,ArrayList<String>>();
+	table = new HashMap<Coordinates,ArrayList<StringAndFloat>>();
     }
 
-    public void setMatching (String note, int sentence, ArrayList<String> list) {
+    public void setMatching (String note, int sentence, ArrayList<StringAndFloat> list) {
 	table.put(new Coordinates(note, sentence), list);
     }
 
-    public ArrayList<String> getMatches(String note,int sentence) {
+    public ArrayList<StringAndFloat> getMatches(String note,int sentence) {
 	return table.get(new Coordinates(note,sentence));
     }
 
     public int size(){
 	return table.size();
     }
-
 }
 
 class Coordinates {
