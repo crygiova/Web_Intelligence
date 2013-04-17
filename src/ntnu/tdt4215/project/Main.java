@@ -18,7 +18,7 @@ public class Main {
     private final static String DOCU_FOLDER = "./docu/";
     private final static String T_FOLDER = DOCU_FOLDER + "NLH/T/";
     private final static String EASY = "T6.6.htm";
-    private final static String MEDIUM = "T1.1.htm";
+    private final static String MEDIUM = "T1.17.htm";
     private final static String DIFFICULT = "T3.1.htm";
     private final static String HOME = "innhold.htm";
 
@@ -30,14 +30,13 @@ public class Main {
 	System.out.println("WORKING ..........");
 
 	//startSolr();
+//	IOFileTxt.test(T_FOLDER + MEDIUM);
 	mainHandbook = IOFileTxt
 		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
 
-	for(int i = 0;i<mainHandbook.size();i++)
-	{
-	   System.out.println("CODE"+mainHandbook.getChapter(i).getCode()+" CONTENT:"+mainHandbook.getChapter(i).getTitle());
-	}
-	System.out.println("done");
+	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
+	
+	System.out.println(".... DONE");
     }
 
     private static void printTable(ArrayList<ArrayList<String>> notesVsICD10) {

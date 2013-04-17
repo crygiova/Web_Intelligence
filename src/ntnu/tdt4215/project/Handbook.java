@@ -36,6 +36,15 @@ public class Handbook {
     public int size() {
 	return this.book.size();
     }
+    
+    public String toString(){
+	String result = "";
+	for(int i = 0;i<this.book.size();i++) {
+	    result += this.book.get(i).toString();
+	    result += "\n";
+	}
+	return result;
+    }
 }
 
 
@@ -85,6 +94,16 @@ class Chapter {
     public int numberOfSentences() {
 	return content.size();
     }
+    
+    public String toString(){
+	String result = "\n\n";
+	result += chapterTitle+"\n";
+	result += code+"\n";
+	for(int i = 0; i < content.size();i++){
+	    result += "\t"+content.get(i).toString()+"\n";
+	}
+	return result;
+    }
 }
 
 class Info {
@@ -110,5 +129,9 @@ class Info {
     
     public void setSentence(String sentence) {
 	this.sentence = sentence;
+    }
+    
+    public String toString(){
+	return (category + " : "+ sentence);
     }
 }

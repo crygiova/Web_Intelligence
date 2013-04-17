@@ -44,7 +44,9 @@ public class CharacterChecker {
 		exit = true;
 	    }
 	}
-	String[] res = { s.substring(0, i), s.substring(i) };
+	String[] res = new String[2];
+	res[0] = s.substring(0, i);
+	res[1] = s.substring(i);
 	return res;
     }
 }

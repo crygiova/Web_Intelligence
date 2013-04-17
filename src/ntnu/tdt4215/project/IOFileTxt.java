@@ -2,7 +2,6 @@ package ntnu.tdt4215.project;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,10 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +37,7 @@ public class IOFileTxt {
     private final static String[] CLASSES_HANDLED = { "seksjon2", "seksjon3",
 	    "seksjon4", "seksjon8" };// , "seksjon8" };
     private final static String[] TAGS_SKIPED = { "br", "input", "img", "tr",
-	    "hr", "ol" };
+	    "hr" };
 
     private final static String H1 = "h1";
     private final static String H2 = "h2";
@@ -57,6 +54,16 @@ public class IOFileTxt {
     private final static String CLASS_LINK = "tonea";
     private static final String PRTNEND = null;
 
+    public static void test(String name) throws IOException {
+	ArrayList<Chapter> parse = parseHTML(name, "");
+	for (Chapter p : parse) {
+	    System.out.println(p.toString());
+	}
+	// for (int i = 0; i < parse.size(); i++) {
+	// System.out.println(parse.get(i).toString() + "\n\n");
+	// }
+    }
+
     // this function parse a html of the 3rd level
     public static ArrayList<Chapter> parseHTML(String fnameInput,
 	    String fnameOut) throws IOException {
@@ -71,10 +78,11 @@ public class IOFileTxt {
 	// return fnameInput;
     }
 
+    // EXtract a subseksjon
     private static ArrayList<Chapter> extractSubSeksjon(
 	    Elements seksjonChildren, int indexClass, int indexH,
 	    String useless, ArrayList<Chapter> chapters) {
-
+	// outOfBound condition
 	if (indexClass >= CLASSES_HANDLED.length || indexH >= TAG.length) {
 	    return chapters;
 	}
@@ -82,55 +90,52 @@ public class IOFileTxt {
 	    // if they are in the section 3
 	    if (seksjonChildren.get(j).className()
 		    .compareToIgnoreCase(CLASSES_HANDLED[indexClass]) == 0) {
-		// System.out.println(useless + seksjonChildren.get(j).tagName()
-		// + " "
-		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
-		// + " " + seksjonChildren.get(j).className());
-
-		// System.out.println(useless + " "
-		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
-		// + " " + seksjonChildren.get(j).className());
-
 		// EXtract the chapterTitle and split it into CODE + CONTENT
 		String[] currentTitle = CharacterChecker
 			.splitTitle(extractTitle(seksjonChildren.get(j),
 				TAG[indexH]));
+		// create a chapter with title code and the content
 		chapters.add(new Chapter(currentTitle[1], currentTitle[0],
 			extractContentSeksjon(seksjonChildren.get(j),
 				indexClass)));
-		return extractSubSeksjon(seksjonChildren.get(j).children(),
+		// extract the subsession
+		extractSubSeksjon(seksjonChildren.get(j).children(),
 			indexClass + 1, indexH + 1, useless + "\t", chapters);
+		// System.out.println(useless + seksjonChildren.get(j).tagName()
+				// + " "
+				// + extractTitle(seksjonChildren.get(j), TAG[indexH])
+				// + " " + seksjonChildren.get(j).className());
+
+				// System.out.println(useless + " "
+				// + extractTitle(seksjonChildren.get(j), TAG[indexH])
+				// + " " + seksjonChildren.get(j).className());
 	    }
 	}
 	return chapters;
 
     }
 
-    // this method extracts a content of a seksjon
+    // this method extracts a content of a seksjon de
     private static ArrayList<Info> extractContentSeksjon(Element element,
 	    int indexClass) {
 	ArrayList<Info> fields = new ArrayList<Info>();
 	Elements children = element.children();
 	Element e;
 	switch (indexClass) {
-
-	// s 2
+	// seksjon 2
 	case 0:
-
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
 		if (isBreak2(e)) {
 		    if (iHaveToTakeIt2(e)) {
-			fields = goDeeply(e, fields);
+			// goDeeplyWorks(e);
+			fields = goDeeplyStart(e, fields);
 		    }
-		} else {
-		    return fields;
 		}
 	    }
 	    break;
-	// s 3
+	 // seksjon 3
 	case 1:
-
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
 		// cindition to EXIT
@@ -138,15 +143,13 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt3(e)) {
 			// System.out.println(i + " " + e.text());
-			fields = goDeeply(e, fields);
+			// goDeeplyWorks(e);
+			fields = goDeeplyStart(e, fields);
 		    }
-		} else {
-		    return fields;
 		}
 	    }
-
 	    break;
-	// s 4
+	 // seksjon 4
 	case 2:
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
@@ -154,26 +157,23 @@ public class IOFileTxt {
 		if (isBreak4(e)) {
 		    // FILTERING
 		    if (iHaveToTakeIt4(e)) {
-			// System.out.println(i + " " + e.text());
-			fields = goDeeply(e, fields);
+			// goDeeplyWorks(e);
+			fields = goDeeplyStart(e, fields);
 		    }
-		} else {
-		    return fields;
 		}
 	    }
 	    break;
 
-	case 3: // s 8
+	case 3: // seksjon 8
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
 		// cindition to EXIT
 		if (isBreak8(e)) {
 		    // FILTERING
 		    if (iHaveToTakeIt8(e)) {
-			fields = goDeeply(e, fields);
+			// goDeeplyWorks(e);
+			fields = goDeeplyStart(e, fields);
 		    }
-		} else {
-		    return fields;
 		}
 	    }
 	    break;
@@ -181,91 +181,66 @@ public class IOFileTxt {
 	return fields;
     }
 
-    private static String goDeeplyWorks(Element child) {
-	// Elements children = e.children();
-	String content = "";
-	// goo down in the document
-	if (iHaveToGo(child)) {
-	    for (int i = 0; i < child.children().size(); i++) {
-		goDeeplyWorks(child.children().get(i));
-	    }
-	} else // is a son with a content
-	if (!child.text().isEmpty()
-		&& (child.text().compareTo(" ") != 0 && !inVector(TAGS_SKIPED,
-			child.tagName()))) {
-	    // System.out.println(child.tagName() + " : " + child.text());
-	}
-	return content;
-    }
-
-    private static ArrayList<Info> goDeeply(Element father, ArrayList<Info> info) {
+    private static ArrayList<Info> goDeeplyStart(Element child,
+	    ArrayList<Info> info) {
 	// goo down in the document
 	Info content;
 	String title = "";
 	String strContent = "";
-	boolean alreadyOne = false;
+	// System.out.println(i + "\t " + child.id() + " " + child.tagName()
+	// + " : " + child.text());
+	if (iHaveToGo(child)) {
+	    goDeeply(child, info);
+	} else // is a son with a content
+	if (CharacterChecker.isStringUseful(child.text())
+		&& !inVector(TAGS_SKIPED, child.tagName())
+		&& child.text() != null) {
+
+	    if (child.tagName().compareTo("h5") == 0) {
+		title = child.text();
+
+	    } else {
+		strContent += child.text();
+	    }
+	}
+	// System.out.println(title + "\n\t" + strContent);
+	if (!title.isEmpty() | !strContent.isEmpty()) {
+	    info.add(new Info(title, strContent));
+	}
+	return info;
+    }
+
+    private static ArrayList<Info> goDeeply(Element father, ArrayList<Info> info) {
+	String title = "";
+	String strContent = "";
 	for (int i = 0; i < father.children().size(); i++) {
+
 	    Element child = father.child(i);
+	    // System.out.println(i + "\t " + child.id() + " " + child.tagName()
+	    // + " : " + child.text());
 	    if (iHaveToGo(child)) {
 		goDeeply(child, info);
 	    } else // is a son with a content
 	    if (CharacterChecker.isStringUseful(child.text())
-		    && !inVector(TAGS_SKIPED, child.tagName())) {
+		    && !inVector(TAGS_SKIPED, child.tagName())
+		    && child.text() != null) {
 
-		if (child.tagName().compareTo("h5") == 0 && alreadyOne) {
-		    alreadyOne = false;
-		    info.add(new Info(title, strContent));
-		    // System.out.println(title + "\n\t" + strContent);
+		if (child.tagName().compareTo("h5") == 0) {
 		    title = child.text();
 
-		} else if (child.tagName().compareTo("h5") == 0 && !alreadyOne) {
-		    alreadyOne = true;
-		    title = child.text();
-		    // System.out.println(i + " " + child.tagName() + " : "
-		    // + child.text());
 		} else {
-		    // System.out.println(i + "\t " + child.tagName() + " : "
-		    // + child.text());
 		    // TODO FILTERS FOR LINKS
 		    strContent += child.text();
 		}
 	    }
 	}
-	// System.out.println(title + "\n\t" + strContent);
 	info.add(new Info(title, strContent));
 	return info;
     }
 
-    // goo down in the HTML to find the tag that contains text
-    private static String goDeeplyDeprecated(Element e) {
-	Elements children = e.children();
-	String content = "";
-	for (int i = 0; i < children.size(); i++) {
-	    Element child = children.get(i);
-	    if (iHaveToGo(child)) {
-		goDeeplyDeprecated(child);
-	    } else {
-		if (!child.text().isEmpty()
-			&& (child.text().compareTo(" ") != 0)
-			&& !inVector(TAGS_SKIPED, child.tagName()))
-		    ;// System.out.println(child.tagName() + " : " +
-		     // child.text());
-	    }
-	}
-	return content;
-    }
-
     private static boolean iHaveToGo(Element child) {
-	return (child.tagName().compareTo("div") == 0);
-    }
-
-    private static String createXML(Element e) {
-	Elements children = e.children();
-	for (int i = 0; i < children.size(); i++) {
-	    Element child = children.get(i);
-	    System.out.println(child.tagName() + " text: " + child.text());
-	}
-	return null;
+	return (child.tagName().compareTo("div") == 0 || child.tagName()
+		.compareTo("ul") == 0);
     }
 
     private static boolean iHaveToTakeIt8(Element e) {
@@ -287,7 +262,6 @@ public class IOFileTxt {
     }
 
     private static boolean isBreak2(Element e) {
-	// TODO Auto-generated method stub
 	return (e.className().compareTo("seksjon3") != 0)
 		&& (e.className().compareTo("seksjon4") != 0);
     }
@@ -299,8 +273,8 @@ public class IOFileTxt {
     }
 
     private static boolean isBreak4(Element e) {
-	// TODO Auto-generated method stub
-	return (e.className().compareTo("seksjon8") != 0);
+	return (e.className().compareTo("seksjon8") != 0 || e.className()
+		.compareTo("seksjon4") != 0);
     }
 
     private static boolean iHaveToTakeIt3(Element e) {
@@ -311,7 +285,9 @@ public class IOFileTxt {
 
     private static boolean isBreak3(Element e) {
 	//
-	return (e.className().compareTo("seksjon4") != 0);
+	return (e.className().compareTo("seksjon4") != 0
+		&& e.className().compareTo("seksjon3") != 0 && e.className()
+		.compareTo("seksjon8") != 0);
     }
 
     public static boolean inVector(String[] vector, String name) {
@@ -334,7 +310,6 @@ public class IOFileTxt {
     public static String[] splitTitle(String mainTitle) {
 
 	String[] title = new String[2];
-	Character previous = mainTitle.charAt(0);
 	int i = 1;
 	while (i < mainTitle.length()) {
 	    if (Character.isWhitespace(mainTitle.charAt(i))) {
@@ -352,7 +327,7 @@ public class IOFileTxt {
 
 	Handbook handBook = new Handbook();
 
-	boolean first = true;
+	boolean first = true; // TODO DELETE
 	File input = new File(fnameInput);
 	Document doc = Jsoup.parse(input, "UTF-8");
 	Elements table = doc.getElementsByTag("table");
@@ -366,7 +341,6 @@ public class IOFileTxt {
 		first = false;
 		// second level file
 		String fileSecondLevel = linkSecondLevel;
-
 		input = new File(T_FOLDER + fileSecondLevel);
 		doc = Jsoup.parse(input, "UTF-8");
 		Element bodyframe2nd = doc.getElementById("bodyframe");
@@ -376,14 +350,11 @@ public class IOFileTxt {
 			"table").get(0);
 		Elements linksThirdLevel = sonsTableSecondLevel
 			.getElementsByTag("a");
-
 		for (Element link3rdLevel : linksThirdLevel) {
-
 		    String hrefOf3rdLevel = link3rdLevel.attr("href");
 		    // Split the link T1.1.htm#i264
 		    hrefOf3rdLevel = hrefOf3rdLevel.split("#")[0];
 		    if (hrefOf3rdLevel.compareTo(".htm") != 0) {
-
 			handBook.addBook(parseHTML(T_FOLDER + hrefOf3rdLevel,
 				hrefOf3rdLevel));
 		    }
