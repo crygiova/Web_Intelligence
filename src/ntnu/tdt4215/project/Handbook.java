@@ -9,6 +9,10 @@ public class Handbook {
 	book = new ArrayList<Chapter>();
     }
     
+    public Handbook(ArrayList<Chapter> book){
+	this.book=book;
+    }
+    
     public void addChapter(Chapter chap) {
 	book.add(chap);
     }
@@ -22,18 +26,18 @@ public class Handbook {
     }
     
     public void addBook(ArrayList<Chapter> book) {
-	// TODO implement it Gonzalo
+	this.book.addAll(book);
     }
 }
 
 
 class Chapter {
-    String title;
+    String chapterTitle;
     String code;
     ArrayList<Info> content;
     
     public Chapter(String title,String code,ArrayList<Info> sentences){
-	this.title = title;
+	this.chapterTitle = title;
 	this.code = code;
 	this.content = sentences;
     }
@@ -43,11 +47,11 @@ class Chapter {
     }
     
     public String getTitle() {
-        return title;
+        return chapterTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.chapterTitle = title;
     }
 
     public String getCode() {
@@ -72,20 +76,20 @@ class Chapter {
 }
 
 class Info {
-    private String title;
+    private String category;
     private String sentence;
     
     public Info(String title,String sentence){
-	this.title = title;
+	this.category = title;
 	this.sentence = sentence;
     }
     
     public String getTitle() {
-	return title;
+	return category;
     }
     
     public void setTitle(String title) {
-	this.title = title;
+	this.category = title;
     }
     
     public String getSentence() {

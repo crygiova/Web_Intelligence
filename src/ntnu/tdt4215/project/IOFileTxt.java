@@ -91,7 +91,7 @@ public class IOFileTxt {
 		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
 		// + " " + seksjonChildren.get(j).className());
 
-		// EXtract the title and split it into CODE + CONTENT
+		// EXtract the chapterTitle and split it into CODE + CONTENT
 		String[] currentTitle = splitTitle(extractTitle(
 			seksjonChildren.get(j), TAG[indexH]));
 		// Extract the content of the current seksjon
