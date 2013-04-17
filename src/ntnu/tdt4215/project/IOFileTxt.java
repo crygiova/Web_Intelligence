@@ -110,7 +110,6 @@ public class IOFileTxt {
     // this method extracts a content of a seksjon
     private static ArrayList<Info> extractContentSeksjon(Element element,
 	    int indexClass) {
-	String content = null;
 	ArrayList<Info> fields = new ArrayList<Info>();
 	Elements children = element.children();
 	Element e;
@@ -123,7 +122,7 @@ public class IOFileTxt {
 		e = children.get(i);
 		if (isBreak2(e)) {
 		    if (iHaveToTakeIt2(e)) {
-			content += goDeeply(e, fields);
+			fields = goDeeply(e, fields);
 		    }
 		} else {
 		    return fields;
@@ -140,7 +139,7 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt3(e)) {
 			// System.out.println(i + " " + e.text());
-			content += goDeeply(e, fields);
+			fields = goDeeply(e, fields);
 		    }
 		} else {
 		    return fields;
@@ -157,7 +156,7 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt4(e)) {
 			// System.out.println(i + " " + e.text());
-			goDeeply(e, fields);
+			fields = goDeeply(e, fields);
 		    }
 		} else {
 		    return fields;
@@ -172,7 +171,7 @@ public class IOFileTxt {
 		if (isBreak8(e)) {
 		    // FILTERING
 		    if (iHaveToTakeIt8(e)) {
-			goDeeply(e, fields);
+			fields = goDeeply(e, fields);
 		    }
 		} else {
 		    return fields;
@@ -203,8 +202,9 @@ public class IOFileTxt {
     private static ArrayList<Info> goDeeply(Element father, ArrayList<Info> info) {
 	// goo down in the document
 	Info content;
-	String title ="";
-	String strContent ="";
+	String title = "";
+	String strContent = "";
+	boolean alreadyOne = false;
 	for (int i = 0; i < father.children().size(); i++) {
 	    Element child = father.child(i);
 	    if (iHaveToGo(child)) {
@@ -214,22 +214,27 @@ public class IOFileTxt {
 		    && (child.text().compareTo(" ") != 0 && !inVector(
 			    TAGS_SKIPED, child.tagName()))) {
 
-		if (child.tagName().compareTo("h5") == 0)
-		{
-		    title=child.text();
-		    System.out.println(i + " " + child.tagName() + " : "
-			    + child.text());
-		    
-		}   
-		else
-		{
-		    System.out.println(i + "\t " + child.tagName() + " : "
-			    + child.text());
-		    strContent+=child.text();
+		if (child.tagName().compareTo("h5") == 0 && alreadyOne) {
+		    alreadyOne = false;
+		    info.add(new Info(title, strContent));
+		    System.out.println(title + "\n\t" + strContent);
+		    title = child.text();
+
+		} else if (child.tagName().compareTo("h5") == 0 && !alreadyOne) {
+		    alreadyOne = true;
+		    title = child.text();
+		    // System.out.println(i + " " + child.tagName() + " : "
+		    // + child.text());
+		} else {
+		    // System.out.println(i + "\t " + child.tagName() + " : "
+		    // + child.text());
+		    // TODO FILTERS FOR LINKS
+		    strContent += child.text();
 		}
 	    }
 	}
-	System.out.println(title+"\n\t"+strContent);
+	System.out.println(title + "\n\t" + strContent);
+	info.add(new Info(title, strContent));
 	return info;
     }
 
