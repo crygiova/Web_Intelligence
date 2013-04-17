@@ -28,13 +28,21 @@ public class Handbook {
     public void addBook(ArrayList<Chapter> book) {
 	this.book.addAll(book);
     }
+    
+    public Chapter getChapter(int i){
+	return book.get(i);
+    }
+
+    public int size() {
+	return this.book.size();
+    }
 }
 
 
 class Chapter {
-    String chapterTitle;
-    String code;
-    ArrayList<Info> content;
+    private String chapterTitle;
+    private String code;
+    private ArrayList<Info> content;
     
     public Chapter(String title,String code,ArrayList<Info> sentences){
 	this.chapterTitle = title;
@@ -70,8 +78,12 @@ class Chapter {
         this.content = sentences;
     }
     
-    public Info getContent(int i){
-	return content.get(i);
+    public String getContent(int i){
+	return (content.get(i).getCategory()+" "+content.get(i).getSentence());
+    }
+
+    public int numberOfSentences() {
+	return content.size();
     }
 }
 
@@ -84,11 +96,11 @@ class Info {
 	this.sentence = sentence;
     }
     
-    public String getTitle() {
+    public String getCategory() {
 	return category;
     }
     
-    public void setTitle(String title) {
+    public void setCategory(String title) {
 	this.category = title;
     }
     

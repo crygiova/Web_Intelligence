@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Table implements java.io.Serializable{
-    /**
-     * 
-     */
     private static final long serialVersionUID = 1L;
     private HashMap<Coordinates,ArrayList<StringAndFloat>> table;
 
