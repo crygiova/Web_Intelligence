@@ -33,6 +33,8 @@ public class Main {
 	// RIGHT TODO -> name final Pattern pattern =
 	// Pattern.compile("<(.*?)\\s");
 	// Parser.parserOWL("newIcd.owl","jose.xml");
+	
+	IOFileTxt.parseHTML(T_FOLDER+MEDIUM, "fnameOut");
 	/*
 	 * System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
 	 * 
@@ -49,25 +51,25 @@ public class Main {
 	 * ArrayList<SolrInputDocument>(); // docs.add( doc1 ); // docs.add(
 	 * doc2 ); // server.add(docs); // server.commit(); SolrQuery query =
 	 * new SolrQuery(); query.setQuery(
-	 * "Eva Andersen er en skoleelev som har hatt insulinkrevende diabetes mellitus i 3 år"
+	 * "Eva Andersen er en skoleelev som har hatt insulinkrevende diabetes mellitus i 3 Ã‚r"
 	 * ); query.addField("id"); QueryResponse rsp = server.query( query );
 	 * SolrDocumentList docs = rsp.getResults(); for(int
 	 * i=0;i<docs.size();i++){ System.out.println(docs.get(i).toString()); }
 	 */
 	//	System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
 	//	
-	String url = "http://localhost:8983/solr";
-	SolrServer server = new HttpSolrServer(url);
+//	String url = "http://localhost:8983/solr";
+//	SolrServer server = new HttpSolrServer(url);
 	//IOFileTxt.parserOWL("./owl/atc_no_ext_rdf.owl", "./owl/atc_no_ext_rdf.xml");
 	//IOFileTxt.parserOWL("./owl/icd10no.owl", "./owl/icd10no.xml");
 //	Table notesVsICD10 = new Table();
-	Table notesVsAtc = new Table();
+//	Table notesVsAtc = new Table();
 //	Table HandbookVsICD = new Table();
 //	Table HandbookVsAtc = new Table();
 //	fill(notesVsICD10,server);
-	fill(notesVsAtc,server);
+//	fill(notesVsAtc,server);
 //	IOFileTxt.saveObj("./notesVSICD10.table", notesVsICD10);
-	IOFileTxt.saveObj("./notesVSAtc.table", notesVsAtc);
+//	IOFileTxt.saveObj("./notesVSAtc.table", notesVsAtc);
 	System.out.println("done");
     }
 

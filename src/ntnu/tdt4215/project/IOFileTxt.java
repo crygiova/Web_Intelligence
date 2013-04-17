@@ -156,7 +156,9 @@ public class IOFileTxt {
 
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
+		// cindition to EXIT
 		if (isBreak3(e)) {
+		    // FILTERING
 		    if (iHaveToTakeIt3(e)) {
 			// System.out.println(i + " " + e.text());
 			content += goDeeply2(e);
@@ -171,7 +173,9 @@ public class IOFileTxt {
 	case 2:
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
+		// cindition to EXIT
 		if (isBreak4(e)) {
+		    // FILTERING
 		    if (iHaveToTakeIt4(e)) {
 			// System.out.println(i + " " + e.text());
 			content += goDeeply2(e);
@@ -185,8 +189,9 @@ public class IOFileTxt {
 	case 3: // s 8
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
-		//
+		// cindition to EXIT
 		if (isBreak8(e)) {
+		    // FILTERING
 		    if (iHaveToTakeIt8(e)) {
 			content += goDeeply2(e);
 		    }
@@ -338,12 +343,17 @@ public class IOFileTxt {
     public static String[] splitTitle(String mainTitle) {
 
 	String[] title = new String[2];
-	for(int i =0;i<mainTitle.length();i++)
-	{
-	   
+	Character previous = mainTitle.charAt(0);
+	int i = 1;
+	while (i < mainTitle.length()) {
+	    if (Character.isDigit(mainTitle.charAt(i - 1))
+		    && Character.isSpace(mainTitle.charAt(i))) {
+		title[0] = mainTitle.substring(0, i);
+		title[1] = mainTitle.substring(i + 1);
+	    }
+	    i++;
 	}
 	return title;
-
     }
 
     private static String extractContent(Element e) {
@@ -459,7 +469,8 @@ public class IOFileTxt {
 		    String next = "";
 		    // System.out.println(obj);
 		    while ((next = br.readLine()) != null
-			    && !next.contains("</owl:Class>") && !next.contains("rdfs:seeAlso")) {
+			    && !next.contains("</owl:Class>")
+			    && !next.contains("rdfs:seeAlso")) {
 			String name = extractName(next);
 			String content;
 
@@ -573,7 +584,7 @@ public class IOFileTxt {
 
     public static String[] extractWords(String el) {
 
-	return el.split("[,|;|:|\"|\'| |(|)|-|_|+|/|>|<|Ç|È|-]");
+	return el.split("[,|;|:|\"|\'| |(|)|-|_|+|/|>|<|ï¿½|ï¿½|-]");
     }
 
     public static int[] readStr(String fname) {
