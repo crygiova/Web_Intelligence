@@ -20,6 +20,10 @@ public class Handbook {
     public void setBook(ArrayList<Chapter> book) {
         this.book = book;
     }
+    
+    public void addBook(ArrayList<Chapter> book) {
+	// TODO implement it Gonzalo
+    }
 }
 
 

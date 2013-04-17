@@ -306,9 +306,11 @@ public class IOFileTxt {
 	return title;
     }
 
-    public static String mainParserHtml(String fnameInput, String fnameOut)
+    public static Handbook mainParserHtml(String fnameInput, String fnameOut)
 	    throws IOException {
 
+	Handbook handBook = new Handbook();
+	
 	boolean first = true;
 	File input = new File(fnameInput);
 	Document doc = Jsoup.parse(input, "UTF-8");
@@ -347,7 +349,7 @@ public class IOFileTxt {
 		// CLOSE THE DOCU AND AFTER I SHOULD PRINT IN A FILE
 
 	    } else {
-		return "END";
+		return null;
 	    }
 	}
 	return null;
