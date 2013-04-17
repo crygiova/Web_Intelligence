@@ -9,8 +9,8 @@ public class Handbook {
 	book = new ArrayList<Chapter>();
     }
     
-    public void addChapter(String title, String code, ArrayList<String> sentences) {
-	book.add(new Chapter(title,code,sentences));
+    public void addChapter(Chapter chap) {
+	book.add(chap);
     }
     
     public ArrayList<Chapter> getBook() {
@@ -26,16 +26,16 @@ public class Handbook {
 class Chapter {
     String title;
     String code;
-    ArrayList<String> sentences;
+    ArrayList<Info> content;
     
-    public Chapter(String title,String code,ArrayList<String> sentences){
+    public Chapter(String title,String code,ArrayList<Info> sentences){
 	this.title = title;
 	this.code = code;
-	this.sentences = sentences;
+	this.content = sentences;
     }
     
-    public void addSentence(String sentence){
-	sentences.add(sentence);
+    public void addInfo(Info content){
+	this.content.add(content);
     }
     
     public String getTitle() {
@@ -54,15 +54,41 @@ class Chapter {
         this.code = code;
     }
 
-    public ArrayList<String> getSentences() {
-        return sentences;
+    public ArrayList<Info> getSentences() {
+        return content;
     }
 
-    public void setSentences(ArrayList<String> sentences) {
-        this.sentences = sentences;
+    public void setContent(ArrayList<Info> sentences) {
+        this.content = sentences;
     }
     
-    public String getSentence(int i){
-	return sentences.get(i);
+    public Info getContent(int i){
+	return content.get(i);
+    }
+}
+
+class Info {
+    private String title;
+    private String sentence;
+    
+    public Info(String title,String sentence){
+	this.title = title;
+	this.sentence = sentence;
+    }
+    
+    public String getTitle() {
+	return title;
+    }
+    
+    public void setTitle(String title) {
+	this.title = title;
+    }
+    
+    public String getSentence() {
+	return sentence;
+    }
+    
+    public void setSentence(String sentence) {
+	this.sentence = sentence;
     }
 }

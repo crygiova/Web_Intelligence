@@ -21,11 +21,11 @@ public class Main {
     private final static String MEDIUM = "T1.1.htm";
     private final static String DIFFICULT = "T3.1.htm";
 
-
-    public static void main(String[] args) throws IOException, SolrServerException {
-	//	System.out.println("WORKING ..........");
+    public static void main(String[] args) throws IOException,
+	    SolrServerException {
+	System.out.println("WORKING ..........");
 	//
-	//	final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
+	// final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
 
 	// final Pattern pattern = Pattern.compile(">.*</");
 	// RIGHT TODO ->content final Pattern pattern =
@@ -33,8 +33,8 @@ public class Main {
 	// RIGHT TODO -> name final Pattern pattern =
 	// Pattern.compile("<(.*?)\\s");
 	// Parser.parserOWL("newIcd.owl","jose.xml");
-	
-	IOFileTxt.parseHTML(T_FOLDER+MEDIUM, "fnameOut");
+
+	IOFileTxt.parseHTML(T_FOLDER + MEDIUM, "fnameOut");
 	/*
 	 * System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
 	 * 
@@ -56,34 +56,37 @@ public class Main {
 	 * SolrDocumentList docs = rsp.getResults(); for(int
 	 * i=0;i<docs.size();i++){ System.out.println(docs.get(i).toString()); }
 	 */
-	//	System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
-	//	
-//	String url = "http://localhost:8983/solr";
-//	SolrServer server = new HttpSolrServer(url);
-	//IOFileTxt.parserOWL("./owl/atc_no_ext_rdf.owl", "./owl/atc_no_ext_rdf.xml");
-	//IOFileTxt.parserOWL("./owl/icd10no.owl", "./owl/icd10no.xml");
-//	Table notesVsICD10 = new Table();
-//	Table notesVsAtc = new Table();
-//	Table HandbookVsICD = new Table();
-//	Table HandbookVsAtc = new Table();
-//	fill(notesVsICD10,server);
-//	fill(notesVsAtc,server);
-//	IOFileTxt.saveObj("./notesVSICD10.table", notesVsICD10);
-//	IOFileTxt.saveObj("./notesVSAtc.table", notesVsAtc);
+	// System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
+	//
+	// String url = "http://localhost:8983/solr";
+	// SolrServer server = new HttpSolrServer(url);
+	// IOFileTxt.parserOWL("./owl/atc_no_ext_rdf.owl",
+	// "./owl/atc_no_ext_rdf.xml");
+	// IOFileTxt.parserOWL("./owl/icd10no.owl", "./owl/icd10no.xml");
+	// Table notesVsICD10 = new Table();
+	// Table notesVsAtc = new Table();
+	// Table HandbookVsICD = new Table();
+	// Table HandbookVsAtc = new Table();
+	// fill(notesVsICD10,server);
+	// fill(notesVsAtc,server);
+	// IOFileTxt.saveObj("./notesVSICD10.table", notesVsICD10);
+	// IOFileTxt.saveObj("./notesVSAtc.table", notesVsAtc);
 	System.out.println("done");
     }
 
     private static void printTable(ArrayList<ArrayList<String>> notesVsICD10) {
-	for(int i = 0; i < notesVsICD10.size();i++) {
-	    for(int j = 0; j < notesVsICD10.get(0).size();i++){
+	for (int i = 0; i < notesVsICD10.size(); i++) {
+	    for (int j = 0; j < notesVsICD10.get(0).size(); i++) {
 		System.out.println(notesVsICD10.get(i).get(j).toString());
 	    }
 	}
     }
 
-    private static void fill(Table notesVsICD10,SolrServer server) throws IOException, SolrServerException{
-	for(Integer i = 1;i<=8;i++){
-	    BufferedReader br = new BufferedReader(new FileReader("docu/cases/case"+i+".txt"));
+    private static void fill(Table notesVsICD10, SolrServer server)
+	    throws IOException, SolrServerException {
+	for (Integer i = 1; i <= 8; i++) {
+	    BufferedReader br = new BufferedReader(new FileReader(
+		    "docu/cases/case" + i + ".txt"));
 	    int sentence = 1;
 	    try {
 		StringBuilder sb = new StringBuilder();
@@ -96,20 +99,22 @@ public class Main {
 		    query.setQuery(line);
 		    query.addField("id");
 		    query.addField("score");
-		    QueryResponse rsp = server.query( query );
+		    QueryResponse rsp = server.query(query);
 		    SolrDocumentList docs = rsp.getResults();
-		    ArrayList<StringAndFloat> articles = new ArrayList<StringAndFloat>(); 
-		    for(int j=0;j<docs.size();j++) {
-			float score = (Float) docs.get(j).getFieldValue("score");
+		    ArrayList<StringAndFloat> articles = new ArrayList<StringAndFloat>();
+		    for (int j = 0; j < docs.size(); j++) {
+			float score = (Float) docs.get(j)
+				.getFieldValue("score");
 			String id = docs.get(j).getFieldValue("id").toString();
-			articles.add(new StringAndFloat(id,score));
+			articles.add(new StringAndFloat(id, score));
 		    }
-//		    for(int k=0;k<articles.size();k++){
-//			System.out.print(articles.get(k).toString());
-//		    }
-//		    System.out.println("");
+		    // for(int k=0;k<articles.size();k++){
+		    // System.out.print(articles.get(k).toString());
+		    // }
+		    // System.out.println("");
 		    notesVsICD10.setMatching(i.toString(), sentence, articles);
-//		    System.out.println(notesVsICD10.getMatches(i.toString(), sentence));
+		    // System.out.println(notesVsICD10.getMatches(i.toString(),
+		    // sentence));
 		    sentence++;
 		    line = br.readLine();
 		}

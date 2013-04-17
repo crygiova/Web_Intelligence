@@ -63,41 +63,11 @@ public class IOFileTxt {
 	// opening the input file
 	inputF = new File(fnameInput);
 	Document mainDoc = Jsoup.parse(inputF, "UTF-8");
-	String mainTitle;
 	// I have the article
 	Element article = mainDoc.getElementsByTag(TAG_ARTICLE).get(0);
-	mainTitle = article.getElementsByTag(H2).get(0).text();
-	// TODO splitTitle(mainTitle);
-	// elements in the article
-	// children of the article seksjon2
-
 	Elements articleChildren = article.children();
 	extractSubSeksjon(articleChildren, 0, 0, "");
-	// for (int i = 0; i < articleChildren.size(); i++) {
-	// // IF IS A SEKSJON 2
-	// if (articleChildren.get(i).className()
-	// .compareToIgnoreCase(CLASSES_HANDLED[0]) == 0) {
-	// System.out.println(articleChildren.get(i).tagName() + " "
-	// + extractTitle(articleChildren.get(i), H2));
-	// // get the child of a seksjon2
-	// extractSubSeksjon(articleChildren.get(i).children(), 1, H3,
-	// "\t");
-	// }
-	//
-	// }
-
-	// // if the article has seksjon2
-	// if (article.getElementsByClass(CLASSES_HANDLED[0]).size() > 0) {
-	// Elements sek2 = article.getElementsByClass(CLASSES_HANDLED[0]);
-	// // for every section 2 -> look for sub8 and for seksjon
-	// // MAIN TITLE OF THE ARTICLE
-	//
-	// if (article.getElementsByClass(DIV_SUB8).size() > 0) {
-	//
-	// }
-	// }
 	return fnameInput;
-
     }
 
     private static String extractSubSeksjon(Elements seksjonChildren,
@@ -109,7 +79,6 @@ public class IOFileTxt {
 	}
 	for (int j = 0; j < seksjonChildren.size(); j++) {
 	    // if they are in the section 3
-
 	    if (seksjonChildren.get(j).className()
 		    .compareToIgnoreCase(CLASSES_HANDLED[indexClass]) == 0) {
 		// System.out.println(useless + seksjonChildren.get(j).tagName()
@@ -117,20 +86,25 @@ public class IOFileTxt {
 		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
 		// + " " + seksjonChildren.get(j).className());
 
-		System.out.println(useless + " "
-			+ extractTitle(seksjonChildren.get(j), TAG[indexH])
-			+ " " + seksjonChildren.get(j).className());
+		// System.out.println(useless + " "
+		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
+		// + " " + seksjonChildren.get(j).className());
 
+		// EXtract the title and split it into CODE + CONTENT
+		String[] currentTitle = splitTitle(extractTitle(
+			seksjonChildren.get(j), TAG[indexH]));
+		// Extract the content of the current seksjon
 		extractContentSeksjon(seksjonChildren.get(j), indexClass);
+		// Extract a subseksjon
 		extractSubSeksjon(seksjonChildren.get(j).children(),
 			indexClass + 1, indexH + 1, useless + "\t");
-
 	    }
 	}
 	return content;
 
     }
 
+    // this method extracts a content of a seksjon
     private static String extractContentSeksjon(Element element, int indexClass) {
 	String content = "";
 	Elements children = element.children();
@@ -144,7 +118,7 @@ public class IOFileTxt {
 		e = children.get(i);
 		if (isBreak2(e)) {
 		    if (iHaveToTakeIt2(e)) {
-			content += goDeeply2(e);
+			content += goDeeply(e);
 		    }
 		} else {
 		    return content;
@@ -161,7 +135,7 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt3(e)) {
 			// System.out.println(i + " " + e.text());
-			content += goDeeply2(e);
+			content += goDeeply(e);
 		    }
 		} else {
 		    return content;
@@ -178,7 +152,7 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt4(e)) {
 			// System.out.println(i + " " + e.text());
-			content += goDeeply2(e);
+			content += goDeeply(e);
 		    }
 		} else {
 		    return content;
@@ -193,7 +167,7 @@ public class IOFileTxt {
 		if (isBreak8(e)) {
 		    // FILTERING
 		    if (iHaveToTakeIt8(e)) {
-			content += goDeeply2(e);
+			content += goDeeply(e);
 		    }
 		} else {
 		    return content;
@@ -204,25 +178,25 @@ public class IOFileTxt {
 	return content;
     }
 
-    private static String goDeeply2(Element child) {
+    private static String goDeeply(Element child) {
 	// Elements children = e.children();
 	String content = "";
 	// goo down in the document
 	if (iHaveToGo(child)) {
 	    for (int i = 0; i < child.children().size(); i++) {
-		goDeeply2(child.children().get(i));
+		goDeeply(child.children().get(i));
 	    }
 	} else // is a son with a content
 	if (!child.text().isEmpty()
 		&& (child.text().compareTo(" ") != 0 && !inVector(TAGS_SKIPED,
 			child.tagName()))) {
-	    System.out.println(child.tagName() + " : " + child.text());
+	    // System.out.println(child.tagName() + " : " + child.text());
 	}
 	return content;
     }
 
     // goo down in the HTML to find the tag that contains text
-    private static String goDeeply(Element e) {
+    private static String goDeeplyDeprecated(Element e) {
 	Elements children = e.children();
 	String content = "";
 	for (int i = 0; i < children.size(); i++) {
@@ -295,7 +269,7 @@ public class IOFileTxt {
     }
 
     private static boolean isBreak3(Element e) {
-	// TODO Auto-generated method stub
+	//
 	return (e.className().compareTo("seksjon4") != 0);
     }
 
@@ -308,34 +282,10 @@ public class IOFileTxt {
 	return false;
     }
 
-    private static String extractSubSeksjon(Elements seksjon2Children,
-	    int indexClass, String H, String useless) {
-
-	if (indexClass >= CLASSES_HANDLED.length) {
-	    return FINISHED;
-	}
-	for (int j = 0; j < seksjon2Children.size(); j++) {
-	    // if they are in the section 3
-	    if (seksjon2Children.get(j).className()
-		    .compareToIgnoreCase(CLASSES_HANDLED[indexClass]) == 0) {
-		String title = extractTitle(seksjon2Children.get(j), H);
-		System.out.println(useless + seksjon2Children.get(j).tagName()
-			+ " " + title + " "
-			+ seksjon2Children.get(j).className());
-		extractSubSeksjon(seksjon2Children.get(j).children(),
-			indexClass, H4, useless + "\t");
-	    }
-	}
-	return null;
-
-    }
-
     private static String extractTitle(Element element, String h32) {
-	// TODO Auto-generated method stub
 
 	if (element.getElementsByTag(h32).size() > 0) {
 	    return element.getElementsByTag(h32).get(0).text();
-
 	}
 	return "";
     }
@@ -356,19 +306,6 @@ public class IOFileTxt {
 	return title;
     }
 
-    private static String extractContent(Element e) {
-	return null;
-
-    }
-
-    private static boolean elementContainClass(Element article, String string) {
-	// TODO Auto-generated method stub
-	if (article.getElementsByClass(string).size() > 0) {
-	    return true;
-	}
-	return false;
-    }
-
     public static String mainParserHtml(String fnameInput, String fnameOut)
 	    throws IOException {
 
@@ -381,22 +318,15 @@ public class IOFileTxt {
 	// for every element I have to create the xml
 	for (Element secondLevel : thingsLevel) {
 	    String linkSecondLevel = secondLevel.attr("href");
-	    String contentSecondLevel = secondLevel.text();
+	    // String contentSecondLevel = secondLevel.text();
 	    if (first) { // TODO DELETE
 		first = false;
 		// second level file
 		String fileSecondLevel = linkSecondLevel;
-		String document2nd = OPEN_DOC;
 
 		input = new File(T_FOLDER + fileSecondLevel);
 		doc = Jsoup.parse(input, "UTF-8");
 		Element bodyframe2nd = doc.getElementById("bodyframe");
-		// extract the title of 2nd level
-		// Element titleH1 = bodyframe2nd.getElementsByTag("h1").get(0);
-		// System.out.println(titleH1.text());
-		// document2nd += createField("id", titleH1.text());
-		// // TODO handle the relates links
-		// TODO extract also the others contents
 
 		// SUBCLASSES from the table
 		Element sonsTableSecondLevel = bodyframe2nd.getElementsByTag(
@@ -407,32 +337,14 @@ public class IOFileTxt {
 		for (Element link3rdLevel : linksThirdLevel) {
 
 		    String hrefOf3rdLevel = link3rdLevel.attr("href");
+		    // Split the link T1.1.htm#i264
 		    hrefOf3rdLevel = hrefOf3rdLevel.split("#")[0];
 		    if (hrefOf3rdLevel.compareTo(".htm") != 0) {
-			// Split the link T1.1.htm#i264
-			parseHTML(T_FOLDER + hrefOf3rdLevel, hrefOf3rdLevel);
 
-			// String contentOf3rdLevel = link3rdLevel.text();
-			// document2nd += createField("subClass",
-			// contentOf3rdLevel);
-			// // System.out.println(hrefOf3rdLevel + " \t "
-			// // + contentOf3rdLevel);
-			// String thirdLevelFile = T_FOLDER + hrefOf3rdLevel;
-			//
-			// // third level file
-			// String thirdLevelXML = extract3rdXML(thirdLevelFile);
-			// // TODO write thirdlevelXML
-			// input = new File(thirdLevelFile);
-			// doc = Jsoup.parse(input, "UTF-8");
-			//
-			// Element article = doc.getElementsByTag("article")
-			// .get(0);
-			// System.out.println(article.attr("id") + " ");
+			parseHTML(T_FOLDER + hrefOf3rdLevel, hrefOf3rdLevel);
 		    }
 		}
 		// CLOSE THE DOCU AND AFTER I SHOULD PRINT IN A FILE
-		document2nd += CLOSE_DOC;
-		// System.out.println(document2nd);
 
 	    } else {
 		return "END";
@@ -441,11 +353,7 @@ public class IOFileTxt {
 	return null;
     }
 
-    private static String extract3rdXML(String thirdLevelFile) {
-	// All or SUB ALL
-	return null;
-    }
-
+    // parser OWL
     public static String parserOWL(String fnameInput, String fnameOut)
 	    throws IOException {
 
@@ -453,7 +361,6 @@ public class IOFileTxt {
 	DataInputStream in = new DataInputStream(fstream);
 	BufferedReader br = new BufferedReader(new InputStreamReader(in));
 	String strLine;
-	int count = 0;
 	String obj = "";
 	PrintWriter writer = getPrinter(fnameOut);
 	writer.append("<add>\n\n<doc>\n");
@@ -484,23 +391,11 @@ public class IOFileTxt {
 			    obj += createField(name, content);
 
 		    }
-		    // TODO obj.printInFIle
-		    count++;
-
 		    // System.out.println(" "+ obj +"");
 		    obj += "</doc>\n\n";
 
 		    writer.append(obj);
 		    obj = "\n\n<doc>\n";
-		    /*
-		     * if(count ==500 || count ==1000 || count ==1500 || count
-		     * ==2000 || count ==2500 || count ==3000 || count ==3500 ||
-		     * count ==4000 || count ==4500 || count ==5000 || count
-		     * ==5500) { writer.append("</add>"); writer.close(); writer
-		     * = getPrinter(count+fnameOut); writer.append("<add>\n\n");
-		     * 
-		     * }
-		     */
 		}
 
 	    }
@@ -585,98 +480,6 @@ public class IOFileTxt {
     public static String[] extractWords(String el) {
 
 	return el.split("[,|;|:|\"|\'| |(|)|-|_|+|/|>|<|�|�|-]");
-    }
-
-    public static int[] readStr(String fname) {
-	int count = 5;
-	int i = 0;
-	Hashtable<String, Integer> h = new Hashtable<String, Integer>();
-	int vector[] = new int[4432461];
-	try {
-	    FileInputStream fstream = new FileInputStream(fname);
-	    DataInputStream in = new DataInputStream(fstream);
-	    BufferedReader br = new BufferedReader(new InputStreamReader(in));
-	    String strLine;
-	    while ((strLine = br.readLine()) != null) {
-
-		if (h.get(strLine) != null) {
-		    h.put(strLine, h.get(strLine) + 1);
-		} else { // if the first time in the hash
-		    h.put(strLine, 1);
-		    int j = 0;
-		    int number = 0;
-		    for (j = 0; j < strLine.length(); j++) {
-			switch (strLine.charAt(j)) {
-			case 'A':
-			    number = 1;
-			    break;
-			case 'C':
-			    number = 2;
-			    break;
-			case 'G':
-			    number = 3;
-			    break;
-			case 'T':
-			    number = 4;
-			    break;
-
-			}
-			vector[j + i] = number;
-		    }
-		    vector[j + i] = count;
-		    count++;
-		    i += strLine.length() + 1;
-		}
-	    }
-	    in.close();
-	} catch (FileNotFoundException excNotFound) {
-	    System.out.println(PRTNFILE + fname);
-	} catch (IOException excLettura) {
-	    System.out.println(PRTNREAD + fname);
-	}
-	// saveObj("./ciao.txt",h.toString());
-	return vector;
-	// return k;
-    }
-
-    public static void writeOn(String fname, int result[]) throws IOException {
-	BufferedWriter wrt = new BufferedWriter(new OutputStreamWriter(
-		new FileOutputStream(fname)));
-	for (int i = 0; i < result.length; i++) {
-
-	    /* VECTOR value */
-	    wrt.newLine();
-	    wrt.append((Integer.toString(i)));
-	    wrt.append(' ');
-	    wrt.append('-');
-	    wrt.append('>');
-	    wrt.append(' ');
-	    wrt.append(Integer.toString(result[i]));
-
-	    /* */
-
-	}
-	wrt.close();
-    }
-
-    public static void generaFile(String char_speciale, String char_sostituto,
-	    String url_scheletro_file, String url_nuovo_file) {
-	try {
-	    BufferedReader rdr = new BufferedReader(new InputStreamReader(
-		    new FileInputStream(url_scheletro_file)));
-	    BufferedWriter wrt = new BufferedWriter(new OutputStreamWriter(
-		    new FileOutputStream(url_nuovo_file)));
-	    String line = rdr.readLine();
-	    while (line != null) {
-		line = line.replaceAll(char_speciale, char_sostituto);
-		wrt.append(line);
-		wrt.newLine();
-		line = rdr.readLine();
-	    }
-	    wrt.close();
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
     }
 
     public static PrintWriter getPrinter(String f) {
