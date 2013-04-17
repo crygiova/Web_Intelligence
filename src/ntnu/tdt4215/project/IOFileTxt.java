@@ -194,7 +194,7 @@ public class IOFileTxt {
 	if (!child.text().isEmpty()
 		&& (child.text().compareTo(" ") != 0 && !inVector(TAGS_SKIPED,
 			child.tagName()))) {
-	    System.out.println(child.tagName() + " : " + child.text());
+//	    System.out.println(child.tagName() + " : " + child.text());
 	}
 	return content;
     }
@@ -217,7 +217,7 @@ public class IOFileTxt {
 		if (child.tagName().compareTo("h5") == 0 && alreadyOne) {
 		    alreadyOne = false;
 		    info.add(new Info(title, strContent));
-		    System.out.println(title + "\n\t" + strContent);
+		    //System.out.println(title + "\n\t" + strContent);
 		    title = child.text();
 
 		} else if (child.tagName().compareTo("h5") == 0 && !alreadyOne) {
@@ -233,7 +233,7 @@ public class IOFileTxt {
 		}
 	    }
 	}
-	System.out.println(title + "\n\t" + strContent);
+//	System.out.println(title + "\n\t" + strContent);
 	info.add(new Info(title, strContent));
 	return info;
     }

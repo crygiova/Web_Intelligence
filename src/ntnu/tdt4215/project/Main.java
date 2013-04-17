@@ -20,6 +20,9 @@ public class Main {
     private final static String EASY = "T6.6.htm";
     private final static String MEDIUM = "T1.1.htm";
     private final static String DIFFICULT = "T3.1.htm";
+    private final static String HOME = "innhold.htm";
+
+    private static Handbook mainHandbook;
 
     public static void main(String[] args) throws IOException,
 	    SolrServerException {
@@ -34,7 +37,8 @@ public class Main {
 	// Pattern.compile("<(.*?)\\s");
 	// Parser.parserOWL("newIcd.owl","jose.xml");
 
-	IOFileTxt.parseHTML(T_FOLDER + MEDIUM, "fnameOut");
+	mainHandbook = IOFileTxt
+		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
 	/*
 	 * System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
 	 * 
