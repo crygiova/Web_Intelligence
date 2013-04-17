@@ -223,17 +223,17 @@ public class IOFileTxt {
 		} else if (child.tagName().compareTo("h5") == 0 && !alreadyOne) {
 		    alreadyOne = true;
 		    title = child.text();
-		    // System.out.println(i + " " + child.tagName() + " : "
-		    // + child.text());
+		     //System.out.println(i + " " + child.tagName() + " : "
+		     //+ child.text());
 		} else {
-		    // System.out.println(i + "\t " + child.tagName() + " : "
-		    // + child.text());
+		     //System.out.println(i + "\t " + child.tagName() + " : "
+		     //+ child.text());
 		    // TODO FILTERS FOR LINKS
 		    strContent += child.text();
 		}
 	    }
 	}
-//	System.out.println(title + "\n\t" + strContent);
+	//System.out.println(title + "\n\t" + strContent);
 	info.add(new Info(title, strContent));
 	return info;
     }
