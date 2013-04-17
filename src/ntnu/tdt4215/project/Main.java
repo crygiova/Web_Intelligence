@@ -28,54 +28,11 @@ public class Main {
     public static void main(String[] args) throws IOException,
 	    SolrServerException {
 	System.out.println("WORKING ..........");
-	//
-	// final String str = "    <exclusion rdf:resource=\"&icd10no;B92\"/> ";
 
-	// final Pattern pattern = Pattern.compile(">.*</");
-	// RIGHT TODO ->content final Pattern pattern =
-	// Pattern.compile(".*>(.*?)<.*");
-	// RIGHT TODO -> name final Pattern pattern =
-	// Pattern.compile("<(.*?)\\s");
-	// Parser.parserOWL("newIcd.owl","jose.xml");
-
+	startSolr();
 	mainHandbook = IOFileTxt
 		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
-	/*
-	 * System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
-	 * 
-	 * System.out.println("WORKING .........."); String url =
-	 * "http://localhost:8983/solr"; SolrServer server = new
-	 * HttpSolrServer(url); ((HttpSolrServer) server).setParser(new
-	 * XMLResponseParser()); // SolrInputDocument doc1 = new
-	 * SolrInputDocument(); // doc1.addField( "id", "id1", 1.0f ); //
-	 * doc1.addField( "name", "doc1", 1.0f ); // doc1.addField( "price", 10
-	 * ); // SolrInputDocument doc2 = new SolrInputDocument(); //
-	 * doc2.addField( "id", "id2", 1.0f ); // doc2.addField( "name", "doc2",
-	 * 1.0f ); // doc2.addField( "price", 20 ); //
-	 * Collection<SolrInputDocument> docs = new
-	 * ArrayList<SolrInputDocument>(); // docs.add( doc1 ); // docs.add(
-	 * doc2 ); // server.add(docs); // server.commit(); SolrQuery query =
-	 * new SolrQuery(); query.setQuery(
-	 * "Eva Andersen er en skoleelev som har hatt insulinkrevende diabetes mellitus i 3 Âr"
-	 * ); query.addField("id"); QueryResponse rsp = server.query( query );
-	 * SolrDocumentList docs = rsp.getResults(); for(int
-	 * i=0;i<docs.size();i++){ System.out.println(docs.get(i).toString()); }
-	 */
-	// System.out.println(IOFileTxt.parseHTM(T_FOLDER + "innhold.htm", ""));
-	//
-	// String url = "http://localhost:8983/solr";
-	// SolrServer server = new HttpSolrServer(url);
-	// IOFileTxt.parserOWL("./owl/atc_no_ext_rdf.owl",
-	// "./owl/atc_no_ext_rdf.xml");
-	// IOFileTxt.parserOWL("./owl/icd10no.owl", "./owl/icd10no.xml");
-	// Table notesVsICD10 = new Table();
-	// Table notesVsAtc = new Table();
-	// Table HandbookVsICD = new Table();
-	// Table HandbookVsAtc = new Table();
-	// fill(notesVsICD10,server);
-	// fill(notesVsAtc,server);
-	// IOFileTxt.saveObj("./notesVSICD10.table", notesVsICD10);
-	// IOFileTxt.saveObj("./notesVSAtc.table", notesVsAtc);
+
 	System.out.println("done");
     }
 
