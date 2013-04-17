@@ -58,24 +58,25 @@ public class IOFileTxt {
     private static final String PRTNEND = null;
 
     // this function parse a html of the 3rd level
-    public static String parseHTML(String fnameInput, String fnameOut)
-	    throws IOException {
+    public static ArrayList<Chapter> parseHTML(String fnameInput,
+	    String fnameOut) throws IOException {
 	// opening the input file
 	inputF = new File(fnameInput);
 	Document mainDoc = Jsoup.parse(inputF, "UTF-8");
 	// I have the article
 	Element article = mainDoc.getElementsByTag(TAG_ARTICLE).get(0);
 	Elements articleChildren = article.children();
-	extractSubSeksjon(articleChildren, 0, 0, "");
-	return fnameInput;
+	return extractSubSeksjon(articleChildren, 0, 0, "",
+		new ArrayList<Chapter>());
+	// return fnameInput;
     }
 
-    private static String extractSubSeksjon(Elements seksjonChildren,
-	    int indexClass, int indexH, String useless) {
+    private static ArrayList<Chapter> extractSubSeksjon(
+	    Elements seksjonChildren, int indexClass, int indexH,
+	    String useless, ArrayList<Chapter> chapters) {
 
-	String content = "";
 	if (indexClass >= CLASSES_HANDLED.length || indexH >= TAG.length) {
-	    return "END";
+	    return chapters;
 	}
 	for (int j = 0; j < seksjonChildren.size(); j++) {
 	    // if they are in the section 3
@@ -94,19 +95,23 @@ public class IOFileTxt {
 		String[] currentTitle = splitTitle(extractTitle(
 			seksjonChildren.get(j), TAG[indexH]));
 		// Extract the content of the current seksjon
-		extractContentSeksjon(seksjonChildren.get(j), indexClass);
 		// Extract a subseksjon
-		extractSubSeksjon(seksjonChildren.get(j).children(),
-			indexClass + 1, indexH + 1, useless + "\t");
+		chapters.add(new Chapter(currentTitle[1], currentTitle[0],
+			extractContentSeksjon(seksjonChildren.get(j),
+				indexClass)));
+		return extractSubSeksjon(seksjonChildren.get(j).children(),
+			indexClass + 1, indexH + 1, useless + "\t", chapters);
 	    }
 	}
-	return content;
+	return chapters;
 
     }
 
     // this method extracts a content of a seksjon
-    private static String extractContentSeksjon(Element element, int indexClass) {
-	String content = "";
+    private static ArrayList<Info> extractContentSeksjon(Element element,
+	    int indexClass) {
+	String content = null;
+	ArrayList<Info> fields = new ArrayList<Info>();
 	Elements children = element.children();
 	Element e;
 	switch (indexClass) {
@@ -118,10 +123,10 @@ public class IOFileTxt {
 		e = children.get(i);
 		if (isBreak2(e)) {
 		    if (iHaveToTakeIt2(e)) {
-			content += goDeeply(e);
+			content += goDeeply(e, fields);
 		    }
 		} else {
-		    return content;
+		    return fields;
 		}
 	    }
 	    break;
@@ -135,10 +140,10 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt3(e)) {
 			// System.out.println(i + " " + e.text());
-			content += goDeeply(e);
+			content += goDeeply(e, fields);
 		    }
 		} else {
-		    return content;
+		    return fields;
 		}
 	    }
 
@@ -152,10 +157,10 @@ public class IOFileTxt {
 		    // FILTERING
 		    if (iHaveToTakeIt4(e)) {
 			// System.out.println(i + " " + e.text());
-			content += goDeeply(e);
+			goDeeply(e, fields);
 		    }
 		} else {
-		    return content;
+		    return fields;
 		}
 	    }
 	    break;
@@ -167,32 +172,65 @@ public class IOFileTxt {
 		if (isBreak8(e)) {
 		    // FILTERING
 		    if (iHaveToTakeIt8(e)) {
-			content += goDeeply(e);
+			goDeeply(e, fields);
 		    }
 		} else {
-		    return content;
+		    return fields;
 		}
 	    }
 	    break;
 	}
-	return content;
+	return fields;
     }
 
-    private static String goDeeply(Element child) {
+    private static String goDeeplyWorks(Element child) {
 	// Elements children = e.children();
 	String content = "";
 	// goo down in the document
 	if (iHaveToGo(child)) {
 	    for (int i = 0; i < child.children().size(); i++) {
-		goDeeply(child.children().get(i));
+		goDeeplyWorks(child.children().get(i));
 	    }
 	} else // is a son with a content
 	if (!child.text().isEmpty()
 		&& (child.text().compareTo(" ") != 0 && !inVector(TAGS_SKIPED,
 			child.tagName()))) {
-	    // System.out.println(child.tagName() + " : " + child.text());
+	    System.out.println(child.tagName() + " : " + child.text());
 	}
 	return content;
+    }
+
+    private static ArrayList<Info> goDeeply(Element father, ArrayList<Info> info) {
+	// goo down in the document
+	Info content;
+	String title ="";
+	String strContent ="";
+	for (int i = 0; i < father.children().size(); i++) {
+	    Element child = father.child(i);
+	    if (iHaveToGo(child)) {
+		goDeeply(child, info);
+	    } else // is a son with a content
+	    if (!child.text().isEmpty()
+		    && (child.text().compareTo(" ") != 0 && !inVector(
+			    TAGS_SKIPED, child.tagName()))) {
+
+		if (child.tagName().compareTo("h5") == 0)
+		{
+		    title=child.text();
+		    System.out.println(i + " " + child.tagName() + " : "
+			    + child.text());
+		    
+		}   
+		else
+		{
+		    System.out.println(i + "\t " + child.tagName() + " : "
+			    + child.text());
+		    strContent+=child.text();
+		}
+	    }
+	}
+	System.out.println(title+"\n\t"+strContent);
+	return info;
     }
 
     // goo down in the HTML to find the tag that contains text
@@ -202,7 +240,7 @@ public class IOFileTxt {
 	for (int i = 0; i < children.size(); i++) {
 	    Element child = children.get(i);
 	    if (iHaveToGo(child)) {
-		goDeeply(child);
+		goDeeplyDeprecated(child);
 	    } else {
 		if (!child.text().isEmpty()
 			&& (child.text().compareTo(" ") != 0)
@@ -310,7 +348,7 @@ public class IOFileTxt {
 	    throws IOException {
 
 	Handbook handBook = new Handbook();
-	
+
 	boolean first = true;
 	File input = new File(fnameInput);
 	Document doc = Jsoup.parse(input, "UTF-8");
@@ -343,7 +381,8 @@ public class IOFileTxt {
 		    hrefOf3rdLevel = hrefOf3rdLevel.split("#")[0];
 		    if (hrefOf3rdLevel.compareTo(".htm") != 0) {
 
-			parseHTML(T_FOLDER + hrefOf3rdLevel, hrefOf3rdLevel);
+			handBook.addBook(parseHTML(T_FOLDER + hrefOf3rdLevel,
+				hrefOf3rdLevel));
 		    }
 		}
 		// CLOSE THE DOCU AND AFTER I SHOULD PRINT IN A FILE
