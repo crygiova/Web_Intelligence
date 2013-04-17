@@ -29,10 +29,14 @@ public class Main {
 	    SolrServerException {
 	System.out.println("WORKING ..........");
 
-	startSolr();
+	//startSolr();
 	mainHandbook = IOFileTxt
 		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
 
+	for(int i = 0;i<mainHandbook.size();i++)
+	{
+	   System.out.println("CODE"+mainHandbook.getChapter(i).getCode()+" CONTENT:"+mainHandbook.getChapter(i).getTitle());
+	}
 	System.out.println("done");
     }
 

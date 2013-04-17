@@ -92,10 +92,9 @@ public class IOFileTxt {
 		// + " " + seksjonChildren.get(j).className());
 
 		// EXtract the chapterTitle and split it into CODE + CONTENT
-		String[] currentTitle = splitTitle(extractTitle(
-			seksjonChildren.get(j), TAG[indexH]));
-		// Extract the content of the current seksjon
-		// Extract a subseksjon
+		String[] currentTitle = CharacterChecker
+			.splitTitle(extractTitle(seksjonChildren.get(j),
+				TAG[indexH]));
 		chapters.add(new Chapter(currentTitle[1], currentTitle[0],
 			extractContentSeksjon(seksjonChildren.get(j),
 				indexClass)));
@@ -194,7 +193,7 @@ public class IOFileTxt {
 	if (!child.text().isEmpty()
 		&& (child.text().compareTo(" ") != 0 && !inVector(TAGS_SKIPED,
 			child.tagName()))) {
-//	    System.out.println(child.tagName() + " : " + child.text());
+	    // System.out.println(child.tagName() + " : " + child.text());
 	}
 	return content;
     }
@@ -210,30 +209,29 @@ public class IOFileTxt {
 	    if (iHaveToGo(child)) {
 		goDeeply(child, info);
 	    } else // is a son with a content
-	    if (!child.text().isEmpty()
-		    && (child.text().compareTo(" ") != 0 && !inVector(
-			    TAGS_SKIPED, child.tagName()))) {
+	    if (CharacterChecker.isStringUseful(child.text())
+		    && !inVector(TAGS_SKIPED, child.tagName())) {
 
 		if (child.tagName().compareTo("h5") == 0 && alreadyOne) {
 		    alreadyOne = false;
 		    info.add(new Info(title, strContent));
-		    //System.out.println(title + "\n\t" + strContent);
+		    // System.out.println(title + "\n\t" + strContent);
 		    title = child.text();
 
 		} else if (child.tagName().compareTo("h5") == 0 && !alreadyOne) {
 		    alreadyOne = true;
 		    title = child.text();
-		     //System.out.println(i + " " + child.tagName() + " : "
-		     //+ child.text());
+		    // System.out.println(i + " " + child.tagName() + " : "
+		    // + child.text());
 		} else {
-		     //System.out.println(i + "\t " + child.tagName() + " : "
-		     //+ child.text());
+		    // System.out.println(i + "\t " + child.tagName() + " : "
+		    // + child.text());
 		    // TODO FILTERS FOR LINKS
 		    strContent += child.text();
 		}
 	    }
 	}
-	//System.out.println(title + "\n\t" + strContent);
+	// System.out.println(title + "\n\t" + strContent);
 	info.add(new Info(title, strContent));
 	return info;
     }
@@ -339,10 +337,10 @@ public class IOFileTxt {
 	Character previous = mainTitle.charAt(0);
 	int i = 1;
 	while (i < mainTitle.length()) {
-	    if (Character.isDigit(mainTitle.charAt(i - 1))
-		    && Character.isSpace(mainTitle.charAt(i))) {
+	    if (Character.isWhitespace(mainTitle.charAt(i))) {
 		title[0] = mainTitle.substring(0, i);
 		title[1] = mainTitle.substring(i + 1);
+		return title;
 	    }
 	    i++;
 	}
@@ -393,10 +391,10 @@ public class IOFileTxt {
 		// CLOSE THE DOCU AND AFTER I SHOULD PRINT IN A FILE
 
 	    } else {
-		return null;
+		return handBook;
 	    }
 	}
-	return null;
+	return handBook;
     }
 
     // parser OWL
