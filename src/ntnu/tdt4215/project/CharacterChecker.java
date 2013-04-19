@@ -49,4 +49,8 @@ public class CharacterChecker {
 	res[1] = s.substring(i);
 	return res;
     }
+
+    public static String filterColumn(String toFilter) {
+	return toFilter.replaceAll(":", " ");
+    }
 }
