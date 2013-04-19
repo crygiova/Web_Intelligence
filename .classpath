@@ -14,5 +14,9 @@
 	<classpathentry kind="lib" path="lib/solr-solrj-4.2.1.jar"/>
 	<classpathentry kind="lib" path="lib/wstx-asl-3.2.7.jar"/>
 	<classpathentry kind="lib" path="lib/zookeeper-3.4.5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1/commons-lang3-3.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1/commons-lang3-3.1-sources.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1/commons-lang3-3.1-tests.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1/commons-lang3-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

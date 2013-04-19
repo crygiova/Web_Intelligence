@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -27,6 +28,7 @@ public class Main {
 
     public static void main(String[] args) throws IOException,
 	    SolrServerException {
+
 	System.out.println("WORKING ..........");
 
 	//startSolr();
@@ -34,8 +36,8 @@ public class Main {
 	mainHandbook = IOFileTxt
 		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
 
+	
 	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
-	System.out.println(CharacterChecker.filterColumn("G:O(N)Z"));
 	System.out.println(".... DONE");
     }
 

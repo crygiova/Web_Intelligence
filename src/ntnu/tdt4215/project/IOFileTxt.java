@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -28,7 +29,7 @@ public class IOFileTxt {
     private final static String FINISHED = "END";
 
     private final static String DOCU_FOLDER = "./docu/";
-    private final static String T_FOLDER = DOCU_FOLDER + "NLH/T/";
+    private final static String T_FOLDER = DOCU_FOLDER + "NLH/T2/";
     private final static String OPEN_DOC = "\n<doc>\n";
     private final static String CLOSE_DOC = "\n</doc>\n";
 
@@ -197,10 +198,10 @@ public class IOFileTxt {
 		&& child.text() != null) {
 
 	    if (child.tagName().compareTo("h5") == 0) {
-		title = child.text();
+		title = unEscape(child.text()); //TODO UNESCAPE
 
 	    } else {
-		strContent += child.text();
+		strContent += unEscape(child.text()); //TODO UNESCAPE
 	    }
 	}
 	// System.out.println(title + "\n\t" + strContent);
@@ -226,11 +227,11 @@ public class IOFileTxt {
 		    && child.text() != null) {
 
 		if (child.tagName().compareTo("h5") == 0) {
-		    title = child.text();
+		    title = unEscape(child.text()); //TODO UNESCAPE
 
 		} else {
 		    // TODO FILTERS FOR LINKS
-		    strContent += child.text();
+		    strContent += unEscape(child.text()); //TODO UNESCAPE
 		}
 	    }
 	}
@@ -302,7 +303,7 @@ public class IOFileTxt {
     private static String extractTitle(Element element, String h32) {
 
 	if (element.getElementsByTag(h32).size() > 0) {
-	    return element.getElementsByTag(h32).get(0).text();
+	    return unEscape(element.getElementsByTag(h32).get(0).text()); //TODO UNESCAPE
 	}
 	return "";
     }
@@ -336,7 +337,6 @@ public class IOFileTxt {
 	// for every element I have to create the xml
 	for (Element secondLevel : thingsLevel) {
 	    String linkSecondLevel = secondLevel.attr("href");
-	    // String contentSecondLevel = secondLevel.text();
 	    if (first) { // TODO DELETE
 		first = false;
 		// second level file
@@ -367,7 +367,13 @@ public class IOFileTxt {
 	}
 	return handBook;
     }
-
+    
+    //unescape XML
+    private static String unEscape(String s)
+    {
+	return StringEscapeUtils.unescapeHtml4(s);
+    }
+    
     // parser OWL
     public static String parserOWL(String fnameInput, String fnameOut)
 	    throws IOException {
