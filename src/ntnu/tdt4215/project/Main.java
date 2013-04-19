@@ -131,7 +131,10 @@ public class Main {
    	    Chapter chap = handbook.getChapter(i);
    	    for(int j = 0;j < chap.numberOfSentences();j++){
    		SolrQuery query = new SolrQuery();
-   		query.setQuery(chap.getContent(i));
+
+   		String q = chap.getContent(i);
+   		q = CharacterChecker.filterColumn(q);
+   		query.setQuery(q);
    		query.addField("id");
    		query.addField("score");
    		QueryResponse rsp = server.query(query);
