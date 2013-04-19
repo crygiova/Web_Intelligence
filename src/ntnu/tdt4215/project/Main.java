@@ -35,7 +35,7 @@ public class Main {
 		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
 
 	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
-	
+	System.out.println(CharacterChecker.filterColumn("G:O(N)Z"));
 	System.out.println(".... DONE");
     }
 

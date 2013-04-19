@@ -51,6 +51,6 @@ public class CharacterChecker {
     }
 
     public static String filterColumn(String toFilter) {
-	return toFilter.replaceAll(":", " ");
+	return toFilter.replaceAll("[)|(|:]", " ");
     }
 }
