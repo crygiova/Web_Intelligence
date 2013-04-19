@@ -16,7 +16,7 @@ import org.apache.solr.common.SolrDocumentList;
 
 public class Main {
     private final static String DOCU_FOLDER = "./docu/";
-    private final static String T_FOLDER = DOCU_FOLDER + "NLH/T/";
+    private final static String T_FOLDER = DOCU_FOLDER + "NLH/T2/";
     private final static String EASY = "T6.6.htm";
     private final static String MEDIUM = "T1.17.htm";
     private final static String DIFFICULT = "T3.1.htm";
@@ -145,6 +145,9 @@ public class Main {
    		    float score = (Float) docs.get(j).getFieldValue("score");
    		    articles.add(new StringAndFloat(id, score));
    		}
+   		System.out.println(chap.getCode());
+   		System.out.println(chap.getTitle());
+   		System.out.println(articles);
    		result.setMatching(chap.getCode(), j+1, articles);
    	    }
    	}
