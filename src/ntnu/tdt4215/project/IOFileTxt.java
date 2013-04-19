@@ -26,7 +26,6 @@ public class IOFileTxt {
     private final static String PRTNFILE = "File not found";
     private final static String PRTNREAD = "File not read";
     private final static String PRTNWRITE = "Writing nt done";
-    private final static String FINISHED = "END";
 
     private final static String OPEN_DOC = "\n<doc>\n";
     private final static String CLOSE_DOC = "\n</doc>\n";
@@ -38,21 +37,17 @@ public class IOFileTxt {
     private final static String[] TAGS_SKIPED = { "br", "input", "img", "tr",
 	    "hr" };
 
-    private final static String H1 = "h1";
     private final static String H2 = "h2";
     private final static String H3 = "h3";
     private final static String H4 = "h4";
     private final static String H5 = "h5";
     private final static String[] TAG = { H2, H3, H4, H5 };
 
-    private final static String[] CLASS_NO_HANDLE = { "", "revidert" };
-    private final static String DIV_SUB8 = "sub8";
     private final static String TAG_ARTICLE = "article";
-    private final static String END_ARTICLE = "/article";
-    private final static String CLASS_TEXT = "defa";
-    private final static String CLASS_LINK = "tonea";
+
     private static final String PRTNEND = null;
 
+    // testing function
     public static void test(String name) throws IOException {
 	ArrayList<Chapter> parse = parseHTML(name, "");
 	for (Chapter p : parse) {
@@ -180,6 +175,7 @@ public class IOFileTxt {
 	return fields;
     }
 
+    // this function start the extraction of the content in the htm
     private static ArrayList<Info> goDeeplyStart(Element child,
 	    ArrayList<Info> info) {
 	// goo down in the document
@@ -209,6 +205,7 @@ public class IOFileTxt {
 	return info;
     }
 
+    // this function extract the content of the htm
     private static ArrayList<Info> goDeeply(Element father, ArrayList<Info> info) {
 	String title = "";
 	String strContent = "";
@@ -242,6 +239,7 @@ public class IOFileTxt {
 		.compareTo("ul") == 0);
     }
 
+    // filter in seksjon8
     private static boolean iHaveToTakeIt8(Element e) {
 	return (e.className().compareTo("revidert") != 0
 		&& e.text().compareTo("") != 0
@@ -249,39 +247,44 @@ public class IOFileTxt {
 		.compareTo(H5) != 0);
     }
 
+    // condition to break in seksjon8
     private static boolean isBreak8(Element e) {
 	return (e.className().compareTo("seksjon3") != 0)
 		&& (e.className().compareTo("seksjon4") != 0);
     }
-
+    // filter in seksjon2
     private static boolean iHaveToTakeIt2(Element e) {
 	return (e.className().compareTo("revidert") != 0 && !e.text().isEmpty()
 		&& !inVector(TAG, e.tagName()) && !inVector(TAGS_SKIPED,
 		    e.tagName()));
     }
 
+    // condition to break in seksjon2
     private static boolean isBreak2(Element e) {
 	return (e.className().compareTo("seksjon3") != 0)
 		&& (e.className().compareTo("seksjon4") != 0);
     }
 
+    // filter in seksjon4
     private static boolean iHaveToTakeIt4(Element e) {
 	return (e.className().compareTo("revidert") != 0
 		&& e.text().compareTo("") != 0 && !inVector(TAG, e.tagName()) && !inVector(
 		    TAGS_SKIPED, e.tagName()));
     }
-
+    // condition to break in seksjon4
     private static boolean isBreak4(Element e) {
 	return (e.className().compareTo("seksjon8") != 0 || e.className()
 		.compareTo("seksjon4") != 0);
     }
 
+    // filter in seksjon3
     private static boolean iHaveToTakeIt3(Element e) {
 	return (e.className().compareTo("revidert") != 0
 		&& e.text().compareTo("") != 0 && !inVector(TAG, e.tagName()) && !inVector(
 		    TAGS_SKIPED, e.tagName()));
     }
 
+    // condition to break in seksjon3
     private static boolean isBreak3(Element e) {
 	//
 	return (e.className().compareTo("seksjon4") != 0
@@ -289,6 +292,7 @@ public class IOFileTxt {
 		.compareTo("seksjon8") != 0);
     }
 
+    // verify that a string is contained in a vector
     public static boolean inVector(String[] vector, String name) {
 	for (String obj : vector) {
 	    if (name.compareToIgnoreCase(obj) == 0) {
@@ -298,6 +302,7 @@ public class IOFileTxt {
 	return false;
     }
 
+    // this function extract the title of a chapter in the handbook
     private static String extractTitle(Element element, String h32) {
 
 	if (element.getElementsByTag(h32).size() > 0) {
@@ -307,6 +312,7 @@ public class IOFileTxt {
 	return "";
     }
 
+    // this function splits the title of the handbook
     public static String[] splitTitle(String mainTitle) {
 
 	String[] title = new String[2];
@@ -322,6 +328,7 @@ public class IOFileTxt {
 	return title;
     }
 
+    // main parser of the htm Handbook
     public static Handbook mainParserHtml(String folder, String fnameInput)
 	    throws IOException {
 
