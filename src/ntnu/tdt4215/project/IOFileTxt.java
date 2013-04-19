@@ -178,8 +178,6 @@ public class IOFileTxt {
     // this function start the extraction of the content in the htm
     private static ArrayList<Info> goDeeplyStart(Element child,
 	    ArrayList<Info> info) {
-	// goo down in the document
-	Info content;
 	String title = "";
 	String strContent = "";
 	// System.out.println(i + "\t " + child.id() + " " + child.tagName()
@@ -192,14 +190,14 @@ public class IOFileTxt {
 		&& child.text() != null) {
 
 	    if (child.tagName().compareTo("h5") == 0) {
-		title = unEscape(child.text()); // TODO UNESCAPE
+		title = unEscape(child.text());
 
 	    } else {
-		strContent += unEscape(child.text()); // TODO UNESCAPE
+		strContent += unEscape(child.text());
 	    }
 	}
 	// System.out.println(title + "\n\t" + strContent);
-	if (!title.isEmpty() | !strContent.isEmpty()) {
+	if (!title.isEmpty() || !strContent.isEmpty()) {
 	    info.add(new Info(title, strContent));
 	}
 	return info;
@@ -222,15 +220,17 @@ public class IOFileTxt {
 		    && child.text() != null) {
 
 		if (child.tagName().compareTo("h5") == 0) {
-		    title = unEscape(child.text()); // TODO UNESCAPE
+		    title = unEscape(child.text());
 
 		} else {
 		    // TODO FILTERS FOR LINKS
-		    strContent += unEscape(child.text()); // TODO UNESCAPE
+		    strContent += unEscape(child.text());
 		}
 	    }
 	}
-	info.add(new Info(title, strContent));
+	if (!title.isEmpty() || !strContent.isEmpty()) {
+	    info.add(new Info(title, strContent));
+	}
 	return info;
     }
 
@@ -252,6 +252,7 @@ public class IOFileTxt {
 	return (e.className().compareTo("seksjon3") != 0)
 		&& (e.className().compareTo("seksjon4") != 0);
     }
+
     // filter in seksjon2
     private static boolean iHaveToTakeIt2(Element e) {
 	return (e.className().compareTo("revidert") != 0 && !e.text().isEmpty()
@@ -271,6 +272,7 @@ public class IOFileTxt {
 		&& e.text().compareTo("") != 0 && !inVector(TAG, e.tagName()) && !inVector(
 		    TAGS_SKIPED, e.tagName()));
     }
+
     // condition to break in seksjon4
     private static boolean isBreak4(Element e) {
 	return (e.className().compareTo("seksjon8") != 0 || e.className()
@@ -306,8 +308,7 @@ public class IOFileTxt {
     private static String extractTitle(Element element, String h32) {
 
 	if (element.getElementsByTag(h32).size() > 0) {
-	    return unEscape(element.getElementsByTag(h32).get(0).text()); // TODO
-									  // UNESCAPE
+	    return unEscape(element.getElementsByTag(h32).get(0).text()); 
 	}
 	return "";
     }
@@ -374,9 +375,13 @@ public class IOFileTxt {
 	return handBook;
     }
 
-    // unescape XML
+    // unescape XML - HTML text
     private static String unEscape(String s) {
-	return StringEscapeUtils.unescapeHtml4(s);
+	// return StringEscapeUtils.unescapeHtml4(s);
+	s = StringEscapeUtils.unescapeHtml4(s);
+	// replace also the unknown char with space !!
+	return s.replace("�", " ");
+
     }
 
     // parser OWL

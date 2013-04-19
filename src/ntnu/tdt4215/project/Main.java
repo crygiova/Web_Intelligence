@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest.METHOD;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
@@ -18,12 +19,12 @@ import org.apache.solr.common.SolrDocumentList;
 public class Main {
     private final static String DOCU_FOLDER = "./docu/";
     private final static String T_FOLDER = DOCU_FOLDER + "NLH/T2/";
-    private final static String L_FOLDER = DOCU_FOLDER + "NLH/L2/";
     private final static String EASY = "T6.6.htm";
     private final static String MEDIUM = "T1.17.htm";
     private final static String DIFFICULT = "T3.1.htm";
     private final static String HOME = "innhold.htm";
-
+    
+    private static MedicalTerms terms = null;
     private static Handbook mainHandbook;
     private static SolrServer server;
 
@@ -32,13 +33,21 @@ public class Main {
 
 	System.out.println("WORKING ..........");
 
-	//startSolr();
-//	IOFileTxt.test(T_FOLDER + MEDIUM);
-	mainHandbook = IOFileTxt
-		.mainParserHtml(L_FOLDER, HOME);
+	startSolr();
 
-	
-	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
+	terms = new MedicalTerms();
+//	IOFileTxt.test(T_FOLDER + MEDIUM);
+//	mainHandbook = IOFileTxt
+//		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
+//
+//	queryHandbook(mainHandbook);
+//	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
+	Table notesVsICD10 = queryNotes();
+	System.out.println(notesVsICD10.toString());
+	Table notesVsICD10Merged = notesVsICD10.mergeTable();
+	System.out.println("----------------------------------");
+	System.out.println(notesVsICD10Merged.toString());
+	System.out.println("----------------------------------");
 	System.out.println(".... DONE");
     }
 
@@ -105,10 +114,14 @@ public class Main {
    		    sb.append(line);
    		    sb.append("\n");
    		    SolrQuery query = new SolrQuery();
-   		    query.setQuery(line);
+   		    String queryText = line;
+   		    queryText = CharacterChecker.filterColumn(queryText);
+   		    queryText = terms.boostMedicalTerms(queryText);
+   		    query.setQuery(queryText);
    		    query.addField("id");
    		    query.addField("score");
    		    QueryResponse rsp = server.query(query);
+//   		    System.out.println(queryText);
    		    SolrDocumentList docs = rsp.getResults();
    		    ArrayList<StringAndFloat> articles = new ArrayList<StringAndFloat>();
    		    for (int j = 0; j < docs.size(); j++) {
@@ -135,21 +148,20 @@ public class Main {
    	    for(int j = 0;j < chap.numberOfSentences();j++){
    		SolrQuery query = new SolrQuery();
 
-   		String q = chap.getContent(i);
+   		String q = chap.getContent(j);
    		q = CharacterChecker.filterColumn(q);
    		query.setQuery(q);
+   		System.out.println("query: "+q);
    		query.addField("id");
    		query.addField("score");
-   		QueryResponse rsp = server.query(query);
+   		QueryResponse rsp = server.query(query,METHOD.POST);
    		SolrDocumentList docs = rsp.getResults();
    		ArrayList<StringAndFloat> articles = new ArrayList<StringAndFloat>();
    		for (int k = 0; k < docs.size(); k++) {
    		    String id = docs.get(k).getFieldValue("id").toString();
-   		    float score = (Float) docs.get(j).getFieldValue("score");
+   		    float score = (Float) docs.get(k).getFieldValue("score");
    		    articles.add(new StringAndFloat(id, score));
    		}
-   		System.out.println(chap.getCode());
-   		System.out.println(chap.getTitle());
    		System.out.println(articles);
    		result.setMatching(chap.getCode(), j+1, articles);
    	    }
