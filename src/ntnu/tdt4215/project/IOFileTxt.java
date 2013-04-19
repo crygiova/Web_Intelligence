@@ -28,8 +28,6 @@ public class IOFileTxt {
     private final static String PRTNWRITE = "Writing nt done";
     private final static String FINISHED = "END";
 
-    private final static String DOCU_FOLDER = "./docu/";
-    private final static String T_FOLDER = DOCU_FOLDER + "NLH/T2/";
     private final static String OPEN_DOC = "\n<doc>\n";
     private final static String CLOSE_DOC = "\n</doc>\n";
 
@@ -103,13 +101,13 @@ public class IOFileTxt {
 		extractSubSeksjon(seksjonChildren.get(j).children(),
 			indexClass + 1, indexH + 1, useless + "\t", chapters);
 		// System.out.println(useless + seksjonChildren.get(j).tagName()
-				// + " "
-				// + extractTitle(seksjonChildren.get(j), TAG[indexH])
-				// + " " + seksjonChildren.get(j).className());
+		// + " "
+		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
+		// + " " + seksjonChildren.get(j).className());
 
-				// System.out.println(useless + " "
-				// + extractTitle(seksjonChildren.get(j), TAG[indexH])
-				// + " " + seksjonChildren.get(j).className());
+		// System.out.println(useless + " "
+		// + extractTitle(seksjonChildren.get(j), TAG[indexH])
+		// + " " + seksjonChildren.get(j).className());
 	    }
 	}
 	return chapters;
@@ -135,7 +133,7 @@ public class IOFileTxt {
 		}
 	    }
 	    break;
-	 // seksjon 3
+	// seksjon 3
 	case 1:
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
@@ -150,7 +148,7 @@ public class IOFileTxt {
 		}
 	    }
 	    break;
-	 // seksjon 4
+	// seksjon 4
 	case 2:
 	    for (int i = 0; i < children.size(); i++) {
 		e = children.get(i);
@@ -198,10 +196,10 @@ public class IOFileTxt {
 		&& child.text() != null) {
 
 	    if (child.tagName().compareTo("h5") == 0) {
-		title = unEscape(child.text()); //TODO UNESCAPE
+		title = unEscape(child.text()); // TODO UNESCAPE
 
 	    } else {
-		strContent += unEscape(child.text()); //TODO UNESCAPE
+		strContent += unEscape(child.text()); // TODO UNESCAPE
 	    }
 	}
 	// System.out.println(title + "\n\t" + strContent);
@@ -227,11 +225,11 @@ public class IOFileTxt {
 		    && child.text() != null) {
 
 		if (child.tagName().compareTo("h5") == 0) {
-		    title = unEscape(child.text()); //TODO UNESCAPE
+		    title = unEscape(child.text()); // TODO UNESCAPE
 
 		} else {
 		    // TODO FILTERS FOR LINKS
-		    strContent += unEscape(child.text()); //TODO UNESCAPE
+		    strContent += unEscape(child.text()); // TODO UNESCAPE
 		}
 	    }
 	}
@@ -303,7 +301,8 @@ public class IOFileTxt {
     private static String extractTitle(Element element, String h32) {
 
 	if (element.getElementsByTag(h32).size() > 0) {
-	    return unEscape(element.getElementsByTag(h32).get(0).text()); //TODO UNESCAPE
+	    return unEscape(element.getElementsByTag(h32).get(0).text()); // TODO
+									  // UNESCAPE
 	}
 	return "";
     }
@@ -323,13 +322,13 @@ public class IOFileTxt {
 	return title;
     }
 
-    public static Handbook mainParserHtml(String fnameInput, String fnameOut)
+    public static Handbook mainParserHtml(String folder, String fnameInput)
 	    throws IOException {
 
 	Handbook handBook = new Handbook();
 
 	boolean first = true; // TODO DELETE
-	File input = new File(fnameInput);
+	File input = new File(folder + fnameInput);
 	Document doc = Jsoup.parse(input, "UTF-8");
 	Elements table = doc.getElementsByTag("table");
 	Element firstTable = table.get(0);
@@ -341,7 +340,7 @@ public class IOFileTxt {
 		first = false;
 		// second level file
 		String fileSecondLevel = linkSecondLevel;
-		input = new File(T_FOLDER + fileSecondLevel);
+		input = new File(folder + fileSecondLevel);
 		doc = Jsoup.parse(input, "UTF-8");
 		Element bodyframe2nd = doc.getElementById("bodyframe");
 
@@ -355,7 +354,7 @@ public class IOFileTxt {
 		    // Split the link T1.1.htm#i264
 		    hrefOf3rdLevel = hrefOf3rdLevel.split("#")[0];
 		    if (hrefOf3rdLevel.compareTo(".htm") != 0) {
-			handBook.addBook(parseHTML(T_FOLDER + hrefOf3rdLevel,
+			handBook.addBook(parseHTML(folder + hrefOf3rdLevel,
 				hrefOf3rdLevel));
 		    }
 		}
@@ -367,13 +366,12 @@ public class IOFileTxt {
 	}
 	return handBook;
     }
-    
-    //unescape XML
-    private static String unEscape(String s)
-    {
+
+    // unescape XML
+    private static String unEscape(String s) {
 	return StringEscapeUtils.unescapeHtml4(s);
     }
-    
+
     // parser OWL
     public static String parserOWL(String fnameInput, String fnameOut)
 	    throws IOException {

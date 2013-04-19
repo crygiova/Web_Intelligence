@@ -18,6 +18,7 @@ import org.apache.solr.common.SolrDocumentList;
 public class Main {
     private final static String DOCU_FOLDER = "./docu/";
     private final static String T_FOLDER = DOCU_FOLDER + "NLH/T2/";
+    private final static String L_FOLDER = DOCU_FOLDER + "NLH/L2/";
     private final static String EASY = "T6.6.htm";
     private final static String MEDIUM = "T1.17.htm";
     private final static String DIFFICULT = "T3.1.htm";
@@ -34,7 +35,7 @@ public class Main {
 	//startSolr();
 //	IOFileTxt.test(T_FOLDER + MEDIUM);
 	mainHandbook = IOFileTxt
-		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
+		.mainParserHtml(L_FOLDER, HOME);
 
 	
 	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
