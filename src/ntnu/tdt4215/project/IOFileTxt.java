@@ -344,7 +344,8 @@ public class IOFileTxt {
 	// for every element I have to create the xml
 	for (Element secondLevel : thingsLevel) {
 	    String linkSecondLevel = secondLevel.attr("href");
-	    if (first) { // TODO DELETE
+	    //if (first) 
+	    { // TODO DELETE
 		first = false;
 		// second level file
 		String fileSecondLevel = linkSecondLevel;
@@ -368,9 +369,11 @@ public class IOFileTxt {
 		}
 		// CLOSE THE DOCU AND AFTER I SHOULD PRINT IN A FILE
 
-	    } else {
-		return handBook;
-	    }
+	    } 
+//	    else 
+//	    {
+//		return handBook;
+//	    }
 	}
 	return handBook;
     }

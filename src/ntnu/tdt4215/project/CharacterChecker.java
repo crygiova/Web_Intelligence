@@ -51,6 +51,19 @@ public class CharacterChecker {
     }
 
     public static String filterColumn(String toFilter) {
-	return toFilter.replaceAll("[)|(|:|+|-|&&|!|\\|*|~|?|{|}|^|,]", " ");
+	String result = toFilter;
+	result= result.replaceAll(":"," ");
+	result= result.replaceAll("\\)"," ");
+	result= result.replaceAll("\\("," ");
+	result= result.replaceAll("\\]"," ");
+	result= result.replaceAll("\\["," ");
+	result= result.replaceAll("\\+"," ");
+	result= result.replaceAll("\\-"," ");
+	result= result.replaceAll(","," ");
+	result= result.replaceAll("\\/"," ");
+	result= result.replaceAll("\\*"," ");
+	result= result.replaceAll("\\^"," ");
+	return result;
+//	return toFilter.replaceAll(":"," ").replaceAll("[)|\\(|:|+|-|&&|!|\\|*|~|?|{|}|^|,]", " ");
     }
 }

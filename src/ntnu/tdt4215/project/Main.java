@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import javax.management.openmbean.InvalidOpenTypeException;
+
 
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrRequest.METHOD;
@@ -37,16 +39,26 @@ public class Main {
 
 	terms = new MedicalTerms();
 //	IOFileTxt.test(T_FOLDER + MEDIUM);
-//	mainHandbook = IOFileTxt
-//		.mainParserHtml(T_FOLDER + HOME, "innhold.html");
+	mainHandbook = IOFileTxt
+		.mainParserHtml(T_FOLDER, HOME);
 //
 //	queryHandbook(mainHandbook);
 //	IOFileTxt.saveStr( "jose.txt" , mainHandbook.toString());
 	Table notesVsICD10 = queryNotes();
-	System.out.println(notesVsICD10.toString());
+	Table handbookVsICD10 = queryHandbook(mainHandbook);
+//	System.out.println(notesVsICD10.toString());
 	Table notesVsICD10Merged = notesVsICD10.mergeTable();
-	System.out.println("----------------------------------");
-	System.out.println(notesVsICD10Merged.toString());
+	IOFileTxt.saveObj("notesVsICD10Merged.pd",notesVsICD10Merged);
+	IOFileTxt.saveStr("notesVsICD10Merged.txt", notesVsICD10Merged.toString());
+	
+	Table handbookVsICD10Merged = handbookVsICD10.mergeTable();
+	IOFileTxt.saveObj("handbookVsICD10.pd",handbookVsICD10Merged);
+	IOFileTxt.saveStr("handbookVsICD10.txt", handbookVsICD10Merged.toString());
+//	System.out.println("----------------------------------");
+//	
+//	
+//	System.out.println(notesVsICD10Merged.toString());
+//	System.out.println(handbookVsICD10Merged.toString());
 	System.out.println("----------------------------------");
 	System.out.println(".... DONE");
     }
@@ -150,8 +162,8 @@ public class Main {
 
    		String q = chap.getContent(j);
    		q = CharacterChecker.filterColumn(q);
+   		q = terms.boostMedicalTerms(q);
    		query.setQuery(q);
-   		System.out.println("query: "+q);
    		query.addField("id");
    		query.addField("score");
    		QueryResponse rsp = server.query(query,METHOD.POST);
@@ -162,7 +174,6 @@ public class Main {
    		    float score = (Float) docs.get(k).getFieldValue("score");
    		    articles.add(new StringAndFloat(id, score));
    		}
-   		System.out.println(articles);
    		result.setMatching(chap.getCode(), j+1, articles);
    	    }
    	}
