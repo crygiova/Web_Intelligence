@@ -9,6 +9,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -308,7 +309,7 @@ public class IOFileTxt {
     private static String extractTitle(Element element, String h32) {
 
 	if (element.getElementsByTag(h32).size() > 0) {
-	    return unEscape(element.getElementsByTag(h32).get(0).text()); 
+	    return unEscape(element.getElementsByTag(h32).get(0).text());
 	}
 	return "";
     }
@@ -344,7 +345,7 @@ public class IOFileTxt {
 	// for every element I have to create the xml
 	for (Element secondLevel : thingsLevel) {
 	    String linkSecondLevel = secondLevel.attr("href");
-	    //if (first) 
+	    // if (first)
 	    { // TODO DELETE
 		first = false;
 		// second level file
@@ -369,11 +370,11 @@ public class IOFileTxt {
 		}
 		// CLOSE THE DOCU AND AFTER I SHOULD PRINT IN A FILE
 
-	    } 
-//	    else 
-//	    {
-//		return handBook;
-//	    }
+	    }
+	    // else
+	    // {
+	    // return handBook;
+	    // }
 	}
 	return handBook;
     }
@@ -560,6 +561,26 @@ public class IOFileTxt {
 		}
 	    }
 	}
+    }
+
+    public static Object loadObj(String fileName) {
+	try {
+	    FileInputStream fileToLoad = new FileInputStream(fileName);
+	    ObjectInputStream read = new ObjectInputStream(fileToLoad);
+	    Object object = read.readObject();
+	    read.close();
+	    return object;
+	} catch (FileNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (ClassNotFoundException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	return null;
     }
 
     public static void delete(File f) {

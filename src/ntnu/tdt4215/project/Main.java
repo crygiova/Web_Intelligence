@@ -26,6 +26,11 @@ public class Main {
     private final static String DIFFICULT = "T3.1.htm";
     private final static String HOME = "innhold.htm";
     
+    private final static String NOTE_VS_ICD10="notesVsICD10Merged.table";
+    private final static String NOTE_VS_ICD10_TXT="notesVsICD10Merged.txt";
+    private final static String FILE_HAND_VS_ICD10 ="handbookVsICD10.table";
+    private final static String FILE_HAND_VS_ICD10_TXT="handbookVsICD10.txt";
+    
     private static MedicalTerms terms = null;
     private static Handbook mainHandbook;
     private static SolrServer server;
@@ -48,12 +53,12 @@ public class Main {
 	Table handbookVsICD10 = queryHandbook(mainHandbook);
 //	System.out.println(notesVsICD10.toString());
 	Table notesVsICD10Merged = notesVsICD10.mergeTable();
-	IOFileTxt.saveObj("notesVsICD10Merged.pd",notesVsICD10Merged);
-	IOFileTxt.saveStr("notesVsICD10Merged.txt", notesVsICD10Merged.toString());
+	IOFileTxt.saveObj("NOTE_VS_ICD10",notesVsICD10Merged);
+	IOFileTxt.saveStr("NOTE_VS_ICD10_TXT", notesVsICD10Merged.toString());
 	
 	Table handbookVsICD10Merged = handbookVsICD10.mergeTable();
-	IOFileTxt.saveObj("handbookVsICD10.pd",handbookVsICD10Merged);
-	IOFileTxt.saveStr("handbookVsICD10.txt", handbookVsICD10Merged.toString());
+	IOFileTxt.saveObj("FILE_HAND_VS_ICD10",handbookVsICD10Merged);
+	IOFileTxt.saveStr("FILE_HAND_VS_ICD10_TXT", handbookVsICD10Merged.toString());
 //	System.out.println("----------------------------------");
 //	
 //	
