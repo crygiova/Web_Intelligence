@@ -57,14 +57,14 @@ public class Main {
 	// System.out.println(notesVsICD10.toString());
 
 	notesVsICD10Merged = notesVsICD10.mergeTable();
-	IOFileTxt.saveObj("NOTE_VS_ICD10", notesVsICD10Merged);
-	IOFileTxt.saveStr("NOTE_VS_ICD10_TXT", notesVsICD10Merged.toString());
+	IOFileTxt.saveObj(NOTE_VS_ICD10, notesVsICD10Merged);
+	IOFileTxt.saveStr(NOTE_VS_ICD10_TXT, notesVsICD10Merged.toString());
 
 	// notesVsICD10Merged = (Table)IOFileTxt.loadObj(NOTE_VS_ICD10);
 
 	handbookVsICD10Merged = handbookVsICD10.mergeTable();
-	IOFileTxt.saveObj("FILE_HAND_VS_ICD10", handbookVsICD10Merged);
-	IOFileTxt.saveStr("FILE_HAND_VS_ICD10_TXT",
+	IOFileTxt.saveObj(FILE_HAND_VS_ICD10, handbookVsICD10Merged);
+	IOFileTxt.saveStr(FILE_HAND_VS_ICD10_TXT,
 		handbookVsICD10Merged.toString());
 
 	// handbookVsICD10Merged = (Table)IOFileTxt.loadObj(NOTE_VS_ICD10);
